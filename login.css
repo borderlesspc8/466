@@ -4,6 +4,7 @@
   --muted: #b8b8b8;
   --input-border: #d8d8d8;
   --primary: #031734;
+  --primary-soft: #0f2a54;
   --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
 }
 
@@ -20,56 +21,43 @@ body {
 }
 
 .login-layout {
-  height: 100vh;
+  min-height: 100vh;
   display: grid;
   grid-template-columns: minmax(420px, 1fr) minmax(640px, 1fr);
 }
 
 .hero-panel {
   position: relative;
-  background: radial-gradient(circle at 20% 25%, #15578d 0%, #072949 38%, #061a2f 62%, #020d1b 100%);
+  background-image: url("assets/login-bg.png");
+  background-size: 960px 1286px;
+  background-position: left top -131px;
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 
 .hero-panel::before,
 .hero-panel::after {
-  content: "";
-  position: absolute;
-  width: 130%;
-  height: 130%;
-  left: -20%;
-  top: -18%;
-  background: conic-gradient(from 200deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
-  filter: blur(8px);
-  transform: rotate(-22deg);
-}
-
-.hero-panel::after {
-  width: 160%;
-  height: 160%;
-  top: -35%;
-  left: -44%;
-  opacity: 0.7;
-  transform: rotate(10deg);
+  content: none;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(0, 0, 0, 0.14) 0%, rgba(0, 0, 0, 0.42) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
 }
 
 .hero-panel h1 {
   position: absolute;
   z-index: 2;
   margin: 0;
-  top: 38px;
+  top: 48px;
   left: 24px;
   color: #fff;
   font-weight: 500;
-  font-size: 36px;
+  font-size: 24px;
   line-height: 1.3;
   letter-spacing: 0.2px;
+  max-width: 320px;
 }
 
 .form-panel {
@@ -79,26 +67,27 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 32px 24px 110px;
 }
 
 .vertical-line {
   position: absolute;
-  height: 360px;
+  height: 450px;
   width: 1px;
   background: #dedede;
-  top: calc(50% - 190px);
+  top: calc(50% - 225px);
 }
 
 .vertical-line.left {
-  left: 24%;
+  left: calc(50% - 160px);
 }
 
 .vertical-line.right {
-  right: 24%;
+  right: calc(50% - 160px);
 }
 
-.login-card {
-  width: 420px;
+.auth-card {
+  width: min(100%, 260px);
   background: #fff;
   border-radius: 0 0 10px 10px;
   box-shadow: var(--card-shadow);
@@ -106,46 +95,131 @@ body {
   z-index: 1;
 }
 
-.login-card h2 {
+.auth-card.is-hidden {
+  display: none;
+}
+
+.auth-card-login {
+  width: min(100%, 420px);
+}
+
+.auth-card h2 {
   margin: 0 0 18px;
   text-align: center;
-  font-size: 42px;
+  font-size: 24px;
   font-weight: 700;
 }
 
-.login-card form {
+.auth-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.login-card input {
-  width: 100%;
-  height: 54px;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  padding: 0 14px;
+.auth-card-login .auth-form input {
+  min-height: 54px;
   font-size: 17px;
-  outline: none;
-  color: #3d3d3d;
+  padding: 0 14px;
 }
 
-.login-card input::placeholder {
+.auth-form input,
+.auth-form select,
+.role-btn {
+  width: 100%;
+  min-height: 31px;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+  outline: none;
+  color: #3d3d3d;
+  background: #fff;
+  font-family: inherit;
+}
+
+.auth-form input::placeholder,
+.auth-form select {
   color: #b6b6b6;
 }
 
-.login-card input:focus {
+.auth-form input:focus,
+.auth-form select:focus,
+.role-btn:focus {
   border-color: #9fa7b2;
+}
+
+.auth-form select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b6b6b6;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.role-btn {
+  cursor: pointer;
+  text-align: center;
+  color: #9a9a9a;
+  background: #f8f8f8;
+}
+
+.role-btn.is-selected {
+  border-color: var(--primary-soft);
+  color: var(--primary-soft);
+  background: #f3f6fb;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  color: #757575;
+  line-height: 1.3;
+}
+
+.checkbox-row input {
+  width: 14px;
+  min-width: 14px;
+  height: 14px;
+  min-height: 14px;
+  margin: 1px 0 0;
+  padding: 0;
 }
 
 .primary-btn,
 .google-btn {
   width: 100%;
+  height: 31px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-card-login .primary-btn,
+.auth-card-login .google-btn {
   height: 54px;
   border-radius: 8px;
   font-size: 20px;
-  font-weight: 500;
-  cursor: pointer;
 }
 
 .primary-btn {
@@ -158,29 +232,38 @@ body {
 .google-btn {
   border: 1px solid #dadce0;
   background: #fff;
-  color: #666;
+  color: #8a8a8a;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .google-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   font-weight: 700;
   background: linear-gradient(45deg, #34a853 0 24%, #fbbc05 24% 48%, #ea4335 48% 73%, #4285f4 73% 100%);
   color: #fff;
-  font-size: 14px;
+  font-size: 10px;
 }
 
-.signup-link {
-  margin: 6px 0 0;
+.text-link {
+  margin: 2px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   text-align: center;
   color: #bebebe;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.auth-card-login .text-link {
+  margin: 6px 0 0;
   font-size: 14px;
 }
 
@@ -194,15 +277,15 @@ body {
 }
 
 .logo-mark {
-  font-size: 44px;
+  font-size: 30px;
   color: #c69037;
   transform: rotate(90deg);
   margin-bottom: 4px;
 }
 
 .logo-text {
-  font-size: 46px;
-  letter-spacing: 1.5px;
+  font-size: 22px;
+  letter-spacing: 1.2px;
   color: #243645;
   font-weight: 500;
 }
@@ -214,10 +297,12 @@ body {
 
   .hero-panel {
     min-height: 260px;
+    background-size: cover;
+    background-position: center;
   }
 
   .hero-panel h1 {
-    font-size: 28px;
+    font-size: 22px;
   }
 
   .form-panel {
@@ -229,7 +314,11 @@ body {
     display: none;
   }
 
-  .login-card {
+  .auth-card {
+    width: min(100%, 320px);
+  }
+
+  .auth-card-login {
     width: min(100%, 460px);
   }
 }

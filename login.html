@@ -20,20 +20,72 @@
       <div class="vertical-line left"></div>
       <div class="vertical-line right"></div>
 
-      <article class="login-card">
+      <article class="auth-card auth-card-login" data-card="login">
         <h2>Entrar</h2>
-        <form>
+        <form class="auth-form" action="#">
           <input type="email" placeholder="Digite seu e-mail" aria-label="Digite seu e-mail" />
           <input type="password" placeholder="Digite sua senha" aria-label="Digite sua senha" />
 
           <button class="primary-btn" type="submit">Entrar</button>
 
           <button class="google-btn" type="button">
-            <span class="google-icon">G</span>
+            <span class="google-icon" aria-hidden="true">G</span>
             <span>Continuar com o Google</span>
           </button>
 
-          <p class="signup-link">Não possui conta? Clique aqui</p>
+          <button class="text-link" type="button" data-toggle="role">Não possui conta? Clique aqui</button>
+        </form>
+      </article>
+
+      <article class="auth-card is-hidden" data-card="role">
+        <h2>Você é?</h2>
+        <form class="auth-form" action="#">
+          <input type="hidden" name="perfil" value="Aventureiro" />
+
+          <div class="role-options" role="group" aria-label="Selecione o perfil">
+            <button class="role-btn is-selected" type="button" data-role="Aventureiro">Aventureiro</button>
+            <button class="role-btn" type="button" data-role="Dono de equipamento">Dono de equipamento</button>
+            <button class="role-btn" type="button" data-role="Lojistas">Lojistas</button>
+          </div>
+
+          <button class="primary-btn" type="button" data-toggle="signup">Entrar</button>
+
+          <button class="text-link" type="button" data-toggle="login">Já possui conta? Clique aqui</button>
+        </form>
+      </article>
+
+      <article class="auth-card is-hidden auth-card-signup" data-card="signup">
+        <h2>Cadastrar</h2>
+        <form class="auth-form auth-form-signup" action="#">
+          <input type="text" placeholder="Nome completo" aria-label="Nome completo" />
+          <input type="email" placeholder="Digite seu e-mail" aria-label="Digite seu e-mail" />
+          <input type="tel" placeholder="Telefone" aria-label="Telefone" />
+          <input type="password" placeholder="Crie sua senha" aria-label="Crie sua senha" />
+          <input type="password" placeholder="Repita sua senha" aria-label="Repita sua senha" />
+
+          <div class="select-wrap">
+            <select aria-label="Como ouviu falar da gente?">
+              <option selected>Como ouviu falar da gente?</option>
+              <option>Instagram</option>
+              <option>Indicação</option>
+              <option>Pesquisa no Google</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" />
+            <span>Aceito os Termos de Serviço e Política de Privacidade.</span>
+          </label>
+
+          <button class="primary-btn" type="submit">Entrar</button>
+
+          <button class="google-btn" type="button">
+            <span class="google-icon" aria-hidden="true">G</span>
+            <span>Continuar com o Google</span>
+          </button>
+
+          <button class="text-link" type="button" data-toggle="login">Não possui conta? Clique aqui</button>
         </form>
       </article>
 
@@ -43,5 +95,64 @@
       </footer>
     </section>
   </main>
+
+  <script>
+    // ── Mock auth ──────────────────────────────────────────────────
+    const MOCK_USER = { nome: 'Usuário Teste', email: 'teste@move.com', role: 'Aventureiro' };
+
+    function mockLogin(role) {
+      localStorage.setItem('move_user', JSON.stringify({ ...MOCK_USER, role }));
+      window.location.href = 'dashboard.html';
+    }
+
+    // Se já estiver logado, vai direto para o dashboard
+    if (localStorage.getItem('move_user')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // ── Navegação entre cards ──────────────────────────────────────
+    const cards = document.querySelectorAll('[data-card]');
+    const roleButtons = document.querySelectorAll('.role-btn');
+    const roleInput = document.querySelector('input[name="perfil"]');
+
+    const showCard = (view) => {
+      cards.forEach((card) => {
+        card.classList.toggle('is-hidden', card.dataset.card !== view);
+      });
+    };
+
+    document.querySelectorAll('[data-toggle]').forEach((button) => {
+      button.addEventListener('click', () => showCard(button.dataset.toggle));
+    });
+
+    roleButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        roleButtons.forEach((item) => item.classList.remove('is-selected'));
+        button.classList.add('is-selected');
+        roleInput.value = button.dataset.role;
+      });
+    });
+
+    // ── Login mockado: formulário de login e Google ────────────────
+    document.querySelector('[data-card="login"] form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      mockLogin('Aventureiro');
+    });
+
+    document.querySelector('[data-card="login"] .google-btn').addEventListener('click', () => {
+      mockLogin('Aventureiro');
+    });
+
+    // ── Cadastro mockado: formulário de signup ─────────────────────
+    document.querySelector('[data-card="signup"] form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const role = roleInput.value || 'Aventureiro';
+      mockLogin(role);
+    });
+
+    document.querySelector('[data-card="signup"] .google-btn').addEventListener('click', () => {
+      mockLogin(roleInput.value || 'Aventureiro');
+    });
+  </script>
 </body>
 </html>
