@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 164" role="img" aria-label="M.O.V.E.">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#DBA220"/>
+      <stop offset="100%" stop-color="#B7792A"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="url(#gold)">
+    <path d="M53 8c28 9 49 30 56 58-13-19-33-33-58-42C40 20 30 17 19 15 30 8 41 6 53 8z"/>
+    <path d="M31 43c30 4 54 20 67 44-17-13-38-21-63-24-13-2-25-2-35-1 8-12 18-19 31-19z"/>
+    <path d="M60 87c24 6 42 22 48 43-11-12-27-20-47-25-24-6-45-5-61 0 14-17 36-25 60-18z"/>
+    <path d="M42 120c21 1 40 9 53 24-17-5-37-7-58-4-14 2-26 6-36 11 9-19 23-31 41-31z"/>
+  </g>
+
+  <text x="130" y="121" fill="#FFFFFF" font-size="108" font-family="Brush Script MT, Segoe Script, Comic Sans MS, cursive" font-weight="700" letter-spacing="1">M.O.V.E.</text>
+</svg>

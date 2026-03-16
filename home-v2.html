@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>M.O.V.E. — Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ─────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #031734;
+      --navy-90: rgba(3, 23, 52, 0.9);
+      --gold: #c8901e;
+      --gold-btn: #b87d18;
+      --text: #171717;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f4f5f7;
+      --white: #fff;
+      --radius-card: 16px;
+      --bottombar-h: 64px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overscroll-behavior: none;
+    }
+
+    /* ── Page wrapper ─────────────────────── */
+    .page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+    }
+
+    .scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: var(--bottombar-h);
+    }
+
+    /* ── TopBar ───────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 0 16px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .burger-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+    }
+
+    .burger-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .topbar-logo {
+      height: 28px;
+      width: auto;
+      display: block;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+    }
+
+    .icon-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    /* ── Hero ─────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 260px;
+      background: url("assets/login-bg.png") center/cover no-repeat;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 68px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(3, 23, 52, 0.25) 0%,
+        rgba(3, 23, 52, 0.68) 100%
+      );
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      padding: 0 20px;
+      color: #fff;
+      font-size: clamp(1.35rem, 6vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* ── Search Card ──────────────────────── */
+    .search-wrap {
+      padding: 0 16px;
+      margin-top: -52px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+      padding: 16px;
+    }
+
+    .search-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .search-fields {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .search-field {
+      flex: 1;
+      padding: 10px 12px;
+      cursor: pointer;
+      min-width: 0;
+    }
+
+    .search-field + .search-field {
+      border-left: 1.5px solid var(--border);
+    }
+
+    .search-field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .search-field-hint {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .search-btn {
+      width: 44px;
+      min-width: 44px;
+      background: var(--gold);
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .search-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.2;
+    }
+
+    /* ── Categories ───────────────────────── */
+    .section {
+      padding: 22px 0 0;
+    }
+
+    .section-header {
+      padding: 0 16px;
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .category-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .category-scroll::-webkit-scrollbar { display: none; }
+
+    .category-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+      min-width: 80px;
+      padding: 10px 8px 12px;
+      background: #fff;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.15s;
+    }
+
+    .category-item.active,
+    .category-item:hover {
+      border-color: var(--gold);
+    }
+
+    .category-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+    }
+
+    .category-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: center;
+    }
+
+    /* ── Nearby cards ─────────────────────── */
+    .cards-scroll {
+      display: flex;
+      gap: 14px;
+      padding: 0 16px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cards-scroll::-webkit-scrollbar { display: none; }
+
+    .vehicle-card {
+      flex-shrink: 0;
+      width: 200px;
+      background: #fff;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    .vehicle-card-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background: url("assets/login-bg.png") center/cover no-repeat;
+      display: block;
+    }
+
+    .vehicle-card-body {
+      padding: 10px 12px 12px;
+    }
+
+    .vehicle-card-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .star {
+      color: #f5a623;
+      font-size: 12px;
+    }
+
+    .vehicle-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+      line-height: 1.25;
+    }
+
+    .vehicle-card-location {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    .vehicle-card-price {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .vehicle-card-price span {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    /* ── Bottom Nav ───────────────────────── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      height: var(--bottombar-h);
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px 0;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+    }
+
+    .nav-item.active {
+      color: var(--navy);
+    }
+
+    .nav-item svg {
+      width: 24px;
+      height: 24px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .nav-item.active svg {
+      fill: var(--navy);
+      stroke: var(--navy);
+    }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* ── Drawer (menu lateral) ────────────── */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .drawer-overlay.open { display: block; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 41;
+      width: 280px;
+      background: var(--navy);
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 20px 24px;
+      gap: 4px;
+    }
+
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+
+    .drawer-logo {
+      height: 28px;
+      width: auto;
+      margin-bottom: 32px;
+    }
+
+    .drawer-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #d8e6fb;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 12px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      text-align: left;
+      width: 100%;
+      text-decoration: none;
+    }
+
+    .drawer-item svg {
+      width: 20px;
+      height: 20px;
+      stroke: #d8e6fb;
+      fill: none;
+      stroke-width: 1.8;
+      flex-shrink: 0;
+    }
+
+    .drawer-item:hover { background: rgba(255,255,255,0.08); }
+
+    .drawer-item.drawer-logout {
+      color: #ef9d9d;
+      margin-top: auto;
+    }
+
+    .drawer-item.drawer-logout svg { stroke: #ef9d9d; }
+
+    /* ── Section spacing ──────────────────── */
+    .section-last { padding-bottom: 8px; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── TopBar ──────────────────────────── -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="burger-btn" id="burger-btn" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <img class="topbar-logo" src="assets/move-logo.svg" alt="M.O.V.E." />
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" aria-label="Mensagens">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Ajuda">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Perfil" onclick="window.location.href='dashboard.html'">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Scroll body ─────────────────────── -->
+  <main class="scroll-body">
+
+    <!-- Hero -->
+    <section class="hero">
+      <p class="hero-text">Navegue pelas nossas lanchas e<br />descubra novas aventuras!</p>
+    </section>
+
+    <!-- Search Card -->
+    <div class="search-wrap">
+      <div class="search-card">
+        <p class="search-card-title">Busque sua próxima aventura</p>
+        <div class="search-fields">
+          <div class="search-field">
+            <span class="search-field-label">Onde?</span>
+            <span class="search-field-hint">Buscar destino</span>
+          </div>
+          <div class="search-field">
+            <span class="search-field-label">Quando?</span>
+            <span class="search-field-hint">Selecionar datas</span>
+          </div>
+          <div class="search-field">
+            <span class="search-field-label">O que?</span>
+            <span class="search-field-hint">Selecionar veículos</span>
+          </div>
+          <button class="search-btn" aria-label="Buscar">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <section class="section">
+      <div class="category-scroll" role="list">
+        <div class="category-item active" role="listitem" aria-label="Lanchas">
+          <div class="category-icon">⛵</div>
+          <span class="category-label">Lanchas</span>
+        </div>
+        <div class="category-item" role="listitem" aria-label="Jet Skis">
+          <div class="category-icon">🛥️</div>
+          <span class="category-label">Jet Skis</span>
+        </div>
+        <div class="category-item" role="listitem" aria-label="Quadriciclos">
+          <div class="category-icon">🏍️</div>
+          <span class="category-label">Quadriciclos</span>
+        </div>
+        <div class="category-item" role="listitem" aria-label="UTVs">
+          <div class="category-icon">🚙</div>
+          <span class="category-label">UTVs</span>
+        </div>
+        <div class="category-item" role="listitem" aria-label="Barcos">
+          <div class="category-icon">🚤</div>
+          <span class="category-label">Barcos</span>
+        </div>
+        <div class="category-item" role="listitem" aria-label="Caiaques">
+          <div class="category-icon">🏄</div>
+          <span class="category-label">Caiaques</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nearby -->
+    <section class="section section-last">
+      <div class="section-header">
+        <h2 class="section-title">Perto de você</h2>
+      </div>
+      <div class="cards-scroll">
+
+        <article class="vehicle-card">
+          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
+          <div class="vehicle-card-body">
+            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
+            <p class="vehicle-card-title">Lancha Millenium 300</p>
+            <p class="vehicle-card-location">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Brasília, DF – Lago Sul
+            </p>
+            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
+          </div>
+        </article>
+
+        <article class="vehicle-card">
+          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
+          <div class="vehicle-card-body">
+            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
+            <p class="vehicle-card-title">Lancha Millenium 300</p>
+            <p class="vehicle-card-location">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Brasília, DF – Lago Sul
+            </p>
+            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
+          </div>
+        </article>
+
+        <article class="vehicle-card">
+          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
+          <div class="vehicle-card-body">
+            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
+            <p class="vehicle-card-title">Lancha Millenium 300</p>
+            <p class="vehicle-card-location">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Brasília, DF – Lago Sul
+            </p>
+            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
+          </div>
+        </article>
+
+        <article class="vehicle-card">
+          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
+          <div class="vehicle-card-body">
+            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
+            <p class="vehicle-card-title">Lancha Millenium 300</p>
+            <p class="vehicle-card-location">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Brasília, DF – Lago Sul
+            </p>
+            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Bottom Nav ───────────────────────── -->
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <button class="nav-item active" aria-label="Início" aria-current="page">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Buscar">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Reservas">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Mensagens">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </button>
+    <button class="nav-item" aria-label="Perfil" onclick="window.location.href='dashboard.html'">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+  </nav>
+
+</div>
+
+<!-- ── Drawer ───────────────────────────── -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Menu lateral">
+  <button class="drawer-close" id="drawer-close" aria-label="Fechar menu">✕</button>
+  <img class="drawer-logo" src="assets/move-logo.svg" alt="M.O.V.E." />
+
+  <a class="drawer-item" href="home-v2.html">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Início
+  </a>
+  <button class="drawer-item">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Buscar
+  </button>
+  <button class="drawer-item">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Reservas
+  </button>
+  <button class="drawer-item">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    Mensagens
+  </button>
+  <a class="drawer-item" href="dashboard.html">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Perfil
+  </a>
+  <a class="drawer-item" href="landing.html">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Landing B2C
+  </a>
+  <a class="drawer-item" href="landing-b2b.html">
+    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    Landing B2B
+  </a>
+  <a class="drawer-item" href="login.html">
+    <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+    Login / Cadastro
+  </a>
+  <button class="drawer-item drawer-logout" id="drawer-logout">
+    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Sair da conta
+  </button>
+</aside>
+
+<script>
+  // ── Drawer ──────────────────────────────
+  const burger = document.getElementById('burger-btn');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  const closeBtn = document.getElementById('drawer-close');
+
+  const openDrawer = () => {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeDrawer = () => {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  burger.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // ── Category active state ────────────────
+  document.querySelectorAll('.category-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // ── Bottom nav active state ──────────────
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // ── Logout ───────────────────────────────
+  document.getElementById('drawer-logout').addEventListener('click', () => {
+    localStorage.removeItem('move_user');
+    window.location.href = 'login.html';
+  });
+</script>
+</body>
+</html>

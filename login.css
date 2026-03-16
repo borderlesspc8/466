@@ -23,14 +23,24 @@ body {
 .login-layout {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: minmax(420px, 1fr) minmax(640px, 1fr);
+  grid-template-columns: 1fr;
+}
+
+/* mobile: form first, hero image second */
+.hero-panel {
+  order: 2;
+}
+
+.form-panel {
+  order: 1;
 }
 
 .hero-panel {
   position: relative;
+  min-height: 260px;
   background-image: url("assets/login-bg.png");
-  background-size: 960px 1286px;
-  background-position: left top -131px;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
 }
@@ -50,14 +60,15 @@ body {
   position: absolute;
   z-index: 2;
   margin: 0;
-  top: 48px;
-  left: 24px;
+  top: 32px;
+  left: 16px;
+  right: 16px;
   color: #fff;
   font-weight: 500;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1.3;
   letter-spacing: 0.2px;
-  max-width: 320px;
+  max-width: 340px;
 }
 
 .form-panel {
@@ -67,7 +78,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px 110px;
+  min-height: calc(100vh - 260px);
+  padding: 28px 16px 100px;
 }
 
 .vertical-line {
@@ -76,6 +88,7 @@ body {
   width: 1px;
   background: #dedede;
   top: calc(50% - 225px);
+  display: none;
 }
 
 .vertical-line.left {
@@ -87,7 +100,7 @@ body {
 }
 
 .auth-card {
-  width: min(100%, 260px);
+  width: min(100%, 320px);
   background: #fff;
   border-radius: 0 0 10px 10px;
   box-shadow: var(--card-shadow);
@@ -100,7 +113,7 @@ body {
 }
 
 .auth-card-login {
-  width: min(100%, 420px);
+  width: min(100%, 460px);
 }
 
 .auth-card h2 {
@@ -276,49 +289,54 @@ body {
   line-height: 1;
 }
 
-.logo-mark {
-  font-size: 30px;
-  color: #c69037;
-  transform: rotate(90deg);
-  margin-bottom: 4px;
+.brand-logo {
+  width: 136px;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-.logo-text {
-  font-size: 22px;
-  letter-spacing: 1.2px;
-  color: #243645;
-  font-weight: 500;
-}
-
-@media (max-width: 1100px) {
+@media (min-width: 1101px) {
   .login-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(420px, 1fr) minmax(640px, 1fr);
   }
 
   .hero-panel {
-    min-height: 260px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .hero-panel h1 {
-    font-size: 22px;
+    order: 1;
   }
 
   .form-panel {
-    min-height: calc(100vh - 260px);
-    padding: 28px 16px 100px;
+    order: 2;
+  }
+
+  .hero-panel {
+    min-height: auto;
+    background-size: 960px 1286px;
+    background-position: left top -131px;
+  }
+
+  .hero-panel h1 {
+    top: 48px;
+    left: 24px;
+    right: auto;
+    font-size: 24px;
+    max-width: 320px;
+  }
+
+  .form-panel {
+    min-height: auto;
+    padding: 32px 24px 110px;
   }
 
   .vertical-line {
-    display: none;
+    display: block;
   }
 
   .auth-card {
-    width: min(100%, 320px);
+    width: min(100%, 260px);
   }
 
   .auth-card-login {
-    width: min(100%, 460px);
+    width: min(100%, 420px);
   }
 }

@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/home", "destination": "/home-v2.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/landing", "destination": "/landing.html" },
+    { "source": "/b2b", "destination": "/landing-b2b.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/(.*)\\.css",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
+    }
+  ]
+}
