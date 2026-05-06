@@ -1,0 +1,103 @@
+Quero que você analise completamente este projeto dentro da pasta atual e me responda de forma estruturada.
+
+Preciso entender exatamente o que já está implementado de forma REAL (não mockado) e o que ainda não existe.
+
+Responda seguindo esta estrutura:
+
+---
+
+## 1. Backend (API)
+
+* Existe backend implementado? (sim/não)
+* Se sim:
+
+  * Quais rotas/endpoints já existem?
+  * Está usando TypeScript + Fastify + Prisma conforme especificado?
+  * Existe conexão com banco MySQL?
+  * Quais módulos estão implementados (auth, users, listings, bookings, payments, etc.)?
+
+---
+
+## 2. Banco de Dados
+
+* Existe configuração de banco?
+* Existe schema Prisma ou SQL?
+* Quais entidades/tabelas estão criadas?
+* Existe relacionamento entre elas?
+
+---
+
+## 3. Autenticação
+
+* O login é real ou mockado?
+* Existe JWT?
+* Existe refresh token?
+* Existe integração com backend ou só localStorage?
+
+---
+
+## 4. Funcionalidades do Marketplace
+
+Para cada item abaixo, diga se está:
+
+* ❌ não existe
+* ⚠️ parcialmente implementado
+* ✅ implementado
+
+Itens:
+
+* Busca de veículos
+* Listagem de anúncios
+* Página de detalhe
+* Criação de anúncios
+* Sistema de reservas
+* Sistema de disponibilidade
+* Sistema de pagamento
+* Sistema de avaliação
+* Sistema de chat
+
+---
+
+## 5. Frontend (Web)
+
+* Está usando React?
+* Está integrado com API ou usando mock?
+* Quais telas existem?
+
+---
+
+## 6. Mobile (React Native)
+
+* Existe app mobile no projeto?
+* Está funcional ou apenas iniciado?
+* Está integrado com backend?
+
+---
+
+## 7. Integrações Externas
+
+* Existe integração com:
+
+  * Mercado Pago?
+  * Google Cloud (Storage, Run, etc.)?
+* Ou tudo ainda está mockado?
+
+---
+
+## 8. Infraestrutura e Deploy
+
+* Existe configuração de deploy?
+* Está usando Vercel, GCP ou outro?
+* Backend já está deployado?
+
+---
+
+## 9. Resumo Final
+
+* O que já está realmente funcional?
+* O que ainda é apenas interface/mock?
+* Qual o nível de completude do projeto (% aproximado)?
+
+---
+
+Seja direto, técnico e objetivo. Não invente nada — apenas analise o que realmente existe no código.

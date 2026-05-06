@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Forma de pagamento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --card: #fff;
+      --text: #151a2a;
+      --muted: #6f7585;
+      --line: #e3e7ef;
+      --blue: #0a2f80;
+      --blue-soft: #eaf0ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      min-height: 100dvh;
+      padding: 20px 14px 154px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .back {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f7f8fa;
+      font-size: 24px;
+      line-height: 1;
+      color: #1e2d4f;
+      cursor: pointer;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .step {
+      height: 7px;
+      border-radius: 999px;
+      background: #e6eaf2;
+    }
+
+    .step.active { background: var(--blue); }
+
+    .caption {
+      margin: 0;
+      color: #70788a;
+      font-size: 16px;
+    }
+
+    .heading {
+      margin: 2px 0 16px;
+      font-size: 23px;
+      font-weight: 700;
+    }
+
+    .payment-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #d7deeb;
+      border-radius: 14px;
+      background: var(--card);
+      padding: 14px 12px;
+      text-align: left;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .payment-option.active {
+      border: 2px solid var(--blue);
+      padding: 13px 11px;
+    }
+
+    .icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: #f0f2f7;
+      display: grid;
+      place-items: center;
+      color: #44577d;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .option-info { flex: 1; }
+
+    .option-title {
+      margin: 0 0 4px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a2238;
+    }
+
+    .option-sub {
+      margin: 0;
+      font-size: 14px;
+      color: #636b7f;
+    }
+
+    .radio {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #cfd6e4;
+      flex-shrink: 0;
+      position: relative;
+      background: #fff;
+    }
+
+    .payment-option.active .radio {
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    .payment-option.active .radio::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .add-card {
+      width: 100%;
+      border: 1.5px dashed #d4dae8;
+      background: transparent;
+      border-radius: 14px;
+      padding: 18px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .add-title {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1d2438;
+    }
+
+    .add-sub {
+      margin: 0;
+      color: #727b8f;
+      font-size: 15px;
+    }
+
+    .plus {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #c7d0e5;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      padding: 12px 14px calc(16px + env(safe-area-inset-bottom));
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .total-label {
+      margin: 0;
+      color: #6f778a;
+      font-size: 16px;
+    }
+
+    .total-value {
+      margin: 0;
+      color: var(--blue);
+      font-size: 43px;
+      font-weight: 700;
+    }
+
+    .next {
+      width: 100%;
+      height: 56px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 19px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 16px rgba(10, 47, 128, 0.25);
+    }
+
+    .terms {
+      margin: 12px 6px 0;
+      color: #9ea4b3;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="top">
+      <button class="back" type="button" aria-label="Voltar" onclick="history.back()">←</button>
+      <h1 class="title">Forma de pagamento</h1>
+    </header>
+
+    <section class="steps" aria-label="Progresso da reserva">
+      <span class="step active"></span>
+      <span class="step active"></span>
+      <span class="step"></span>
+    </section>
+
+    <p class="caption">Passo 2 de 3</p>
+    <h2 class="heading">Escolha como pagar</h2>
+
+    <button class="payment-option active" type="button" data-method="pix">
+      <span class="icon">▦</span>
+      <span class="option-info">
+        <p class="option-title">Pix</p>
+        <p class="option-sub">Pagamento instantâneo</p>
+      </span>
+      <span class="radio" aria-hidden="true"></span>
+    </button>
+
+    <button class="payment-option" type="button" data-method="card">
+      <span class="icon">💳</span>
+      <span class="option-info">
+        <p class="option-title">Cartão de Crédito</p>
+        <p class="option-sub">Até 12x sem juros</p>
+      </span>
+      <span class="radio" aria-hidden="true"></span>
+    </button>
+
+    <button class="add-card" type="button">
+      <span>
+        <p class="add-title">Adicionar novo cartão</p>
+        <p class="add-sub">Cadastre um novo cartão de crédito</p>
+      </span>
+      <span class="plus">+</span>
+    </button>
+  </main>
+
+  <footer class="footer">
+    <div class="total-row">
+      <p class="total-label">Total a pagar</p>
+      <p class="total-value" id="total-price">R$ 249,90</p>
+    </div>
+    <button class="next" type="button" id="next-payment">Próximo →</button>
+    <p class="terms">Ao clicar em próximo, você concorda com nossos Termos de Serviço e Política de Privacidade.</p>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const total = params.get('total');
+    if (total) {
+      document.getElementById('total-price').textContent = total;
+    }
+
+    const options = Array.from(document.querySelectorAll('.payment-option'));
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        options.forEach((item) => item.classList.remove('active'));
+        option.classList.add('active');
+      });
+    });
+
+    document.getElementById('next-payment').addEventListener('click', () => {});
+  </script>
+</body>
+</html>

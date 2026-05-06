@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Confirme sua reserva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f3f3f4;
+      --card: #ffffff;
+      --text: #121625;
+      --muted: #6c7280;
+      --border: #eceef2;
+      --blue: #082f7a;
+      --green-bg: #e9f8f1;
+      --green: #1d8f62;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .page {
+      min-height: 100dvh;
+      padding: 18px 14px 114px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
+      border: 0;
+      background: transparent;
+      color: #17203b;
+      font-size: 24px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 33px;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 7px rgba(16, 24, 40, 0.06);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .boat-image {
+      height: 220px;
+      background: url("assets/login-bg.png") center/cover no-repeat;
+    }
+
+    .boat-body {
+      padding: 14px;
+    }
+
+    .label {
+      margin: 0 0 4px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #444d67;
+      font-weight: 600;
+    }
+
+    .boat-title {
+      margin: 0 0 6px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .location {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .section-title {
+      margin: 22px 2px 12px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .inline-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    .icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: #f2f5fb;
+      display: grid;
+      place-items: center;
+      color: #103b92;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .grow { flex: 1; min-width: 0; }
+
+    .small-label {
+      margin: 0 0 4px;
+      color: #8a90a1;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .strong {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 600;
+      color: #1f2536;
+    }
+
+    .change-btn {
+      border: 0;
+      background: transparent;
+      color: #1f356f;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .prices {
+      padding: 12px 14px;
+    }
+
+    .prices-title {
+      margin: 0 0 8px;
+      color: #8a90a1;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: #32384a;
+      font-size: 16px;
+    }
+
+    .row.total {
+      margin-top: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      margin-bottom: 0;
+      font-weight: 700;
+      color: #11192f;
+    }
+
+    .row.total span:last-child {
+      color: #0a2c79;
+      font-size: 19px;
+    }
+
+    .policy {
+      display: flex;
+      gap: 12px;
+      padding: 12px;
+      align-items: flex-start;
+    }
+
+    .policy .icon-wrap {
+      background: var(--green-bg);
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .policy-text {
+      margin: 0;
+      color: #31374a;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .map {
+      margin-top: 12px;
+      height: 126px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: linear-gradient(0deg, #d9ece4 0%, #eaf4f0 100%);
+      display: grid;
+      place-items: center;
+      font-size: 36px;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-caption {
+      margin: 0 0 4px;
+      color: #7f8594;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .bottom-total {
+      margin: 0;
+      font-size: 38px;
+      font-weight: 700;
+      color: #0f1e3f;
+    }
+
+    .next-btn {
+      border: 0;
+      border-radius: 12px;
+      min-width: 150px;
+      height: 50px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(10, 44, 121, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <button class="back-btn" type="button" aria-label="Voltar" onclick="history.back()">←</button>
+      <h1 class="title">Confirme sua reserva</h1>
+    </header>
+
+    <article class="card">
+      <div class="boat-image" role="img" aria-label="Lancha selecionada"></div>
+      <div class="boat-body">
+        <p class="label">Embarcação selecionada</p>
+        <h2 class="boat-title">Lancha Millenium 300</h2>
+        <p class="location">📍 <span id="where-value">Lago Paranoá, Brasília, DF</span></p>
+      </div>
+    </article>
+
+    <h2 class="section-title">Detalhes da reserva</h2>
+
+    <article class="card inline-card">
+      <div class="icon-wrap">📅</div>
+      <div class="grow">
+        <p class="small-label">Datas</p>
+        <p class="strong" id="when-value">15 - 16 de Outubro</p>
+      </div>
+      <button class="change-btn" type="button" onclick="history.back()">Alterar</button>
+    </article>
+
+    <article class="card prices">
+      <p class="prices-title">Resumo de valores</p>
+      <div class="row"><span>Diária (1x)</span><span>R$ 2.500,00</span></div>
+      <div class="row"><span>Taxa de serviço</span><span>R$ 150,00</span></div>
+      <div class="row total"><span>Total</span><span>R$ 2.650,00</span></div>
+    </article>
+
+    <article class="card policy">
+      <div class="icon-wrap">🛡️</div>
+      <div>
+        <p class="small-label">Política de cancelamento</p>
+        <p class="policy-text">Cancelamento gratuito até 48h antes do check-in.</p>
+      </div>
+    </article>
+
+    <section class="map" aria-label="Mapa da reserva">📍</section>
+  </main>
+
+  <footer class="bottom-bar">
+    <div>
+      <p class="bottom-caption">Total</p>
+      <p class="bottom-total">R$ 2.650,00</p>
+    </div>
+    <button class="next-btn" type="button" id="go-payment">Próximo</button>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const where = params.get('where');
+    const when = params.get('when');
+    const what = params.get('what');
+
+    if (where) {
+      document.getElementById('where-value').textContent = where;
+    }
+
+    if (when) {
+      document.getElementById('when-value').textContent = when;
+    }
+
+    if (what) {
+      const title = document.querySelector('.boat-title');
+      if (what.toLowerCase().includes('jet')) {
+        title.textContent = 'Jetski Waverunner';
+      } else if (what.toLowerCase().includes('utv')) {
+        title.textContent = 'UTV Polaris RZR';
+      } else if (what.toLowerCase().includes('quadric')) {
+        title.textContent = 'Quadriciclo CFORCE';
+      }
+    }
+
+    document.getElementById('go-payment').addEventListener('click', () => {
+      const query = new URLSearchParams(window.location.search);
+      query.set('total', 'R$ 2.650,00');
+      window.location.href = `payment.html?${query.toString()}`;
+    });
+  </script>
+</body>
+</html>

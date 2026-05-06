@@ -48,10 +48,12 @@
 
     /* ── TopBar ───────────────────────────── */
     .topbar {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 30;
-      background: var(--navy);
+      background: linear-gradient(to bottom, rgba(3, 23, 52, 0.66), rgba(3, 23, 52, 0.2));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -118,11 +120,11 @@
     /* ── Hero ─────────────────────────────── */
     .hero {
       position: relative;
-      min-height: 260px;
+      min-height: 310px;
       background: url("assets/login-bg.png") center/cover no-repeat;
       display: flex;
       align-items: flex-end;
-      padding-bottom: 68px;
+      padding-bottom: 76px;
     }
 
     .hero::after {
@@ -159,31 +161,29 @@
     .search-card {
       background: #fff;
       border-radius: var(--radius-card);
-      box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
-      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+      padding: 18px;
     }
 
     .search-card-title {
       font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 12px;
+      font-weight: 500;
+      margin-bottom: 14px;
       color: var(--text);
     }
 
     .search-fields {
       display: flex;
       align-items: stretch;
-      gap: 0;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 999px;
       overflow: hidden;
     }
 
     .search-field {
       flex: 1;
-      padding: 10px 12px;
-      cursor: pointer;
       min-width: 0;
+      padding: 10px 16px;
     }
 
     .search-field + .search-field {
@@ -195,34 +195,49 @@
       font-size: 12px;
       font-weight: 600;
       color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.1;
     }
 
-    .search-field-hint {
+    .search-field-input {
       display: block;
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
       font-size: 11px;
       color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       margin-top: 2px;
+      line-height: 1.1;
+      padding: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      font-family: inherit;
+    }
+
+    .search-field-input::placeholder { color: var(--text-muted); }
+
+    .search-row {
+      display: contents;
     }
 
     .search-btn {
-      width: 44px;
-      min-width: 44px;
-      background: var(--gold);
+      width: 52px;
+      min-width: 52px;
+      height: 52px;
+      margin: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 30%, #dec88d 0%, #b18a3d 68%, #9a7834 100%);
       border: none;
       cursor: pointer;
       display: grid;
-      place-items: center;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(183, 140, 58, 0.45);
     }
 
     .search-btn svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       stroke: #fff;
       fill: none;
       stroke-width: 2.2;
@@ -276,13 +291,13 @@
     }
 
     .category-icon {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: var(--bg);
       display: grid;
       place-items: center;
-      font-size: 26px;
+      font-size: 24px;
     }
 
     .category-label {
@@ -541,23 +556,31 @@
     <div class="search-wrap">
       <div class="search-card">
         <p class="search-card-title">Busque sua próxima aventura</p>
-        <div class="search-fields">
+        <form class="search-fields" id="reservation-search-form">
           <div class="search-field">
-            <span class="search-field-label">Onde?</span>
-            <span class="search-field-hint">Buscar destino</span>
+            <label class="search-field-label" for="where-input">Onde?</label>
+            <input id="where-input" name="where" class="search-field-input" type="text" placeholder="Buscar destino" />
           </div>
-          <div class="search-field">
-            <span class="search-field-label">Quando?</span>
-            <span class="search-field-hint">Selecionar datas</span>
+          <div class="search-row">
+            <div class="search-field">
+              <label class="search-field-label" for="when-input">Quando?</label>
+              <input id="when-input" name="when" class="search-field-input" type="text" placeholder="Selecionar datas" />
+            </div>
+            <div class="search-field">
+              <label class="search-field-label" for="what-input">O que?</label>
+              <select id="what-input" name="what" class="search-field-input">
+                <option value="">Selecionar veículos</option>
+                <option>Lanchas</option>
+                <option>Jet Skis</option>
+                <option>Quadriciclos</option>
+                <option>UTVs</option>
+              </select>
+            </div>
           </div>
-          <div class="search-field">
-            <span class="search-field-label">O que?</span>
-            <span class="search-field-hint">Selecionar veículos</span>
-          </div>
-          <button class="search-btn" aria-label="Buscar">
+          <button class="search-btn" type="submit" aria-label="Buscar">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </button>
-        </div>
+        </form>
       </div>
     </div>
 
@@ -763,6 +786,23 @@
   document.getElementById('drawer-logout').addEventListener('click', () => {
     localStorage.removeItem('move_user');
     window.location.href = 'login.html';
+  });
+
+  // ── Start reservation flow from search ──
+  const searchForm = document.getElementById('reservation-search-form');
+  searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const where = document.getElementById('where-input').value.trim();
+    const when = document.getElementById('when-input').value.trim();
+    const what = document.getElementById('what-input').value.trim();
+
+    const query = new URLSearchParams({
+      where,
+      when,
+      what
+    });
+
+    window.location.href = `booking-confirm.html?${query.toString()}`;
   });
 </script>
 </body>

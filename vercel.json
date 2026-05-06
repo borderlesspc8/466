@@ -8,6 +8,8 @@
     { "source": "/home", "destination": "/home-v2.html" },
     { "source": "/login", "destination": "/login.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/booking-confirm", "destination": "/booking-confirm.html" },
+    { "source": "/payment", "destination": "/payment.html" },
     { "source": "/landing", "destination": "/landing.html" },
     { "source": "/b2b", "destination": "/landing-b2b.html" }
   ],
