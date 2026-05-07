@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Chat com proprietário</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f2f3f5;
+      --line: #dce1ea;
+      --blue: #04163a;
+      --text: #1a2232;
+      --muted: #8890a1;
+      --bubble-left: #d9d9d9;
+      --bubble-right: #f8f8f8;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .header {
+      height: 84px;
+      background: linear-gradient(90deg, #04163a 0%, #062967 70%, #0a3a8e 100%);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      top: -8px;
+      width: 94px;
+      height: 116px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 28% 35%, rgba(78, 132, 255, 0.5), rgba(28, 78, 182, 0.35) 56%, rgba(16, 43, 105, 0) 74%);
+    }
+    .logo {
+      height: 30px;
+      width: auto;
+      z-index: 1;
+    }
+    .chat-head {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .back {
+      border: 0;
+      background: transparent;
+      color: #5f6778;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .avatar-sm {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #bdc5d3;
+      color: #8890a1;
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      line-height: 1;
+    }
+    .chat-title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.1;
+    }
+    .chat-sub {
+      margin: 1px 0 0;
+      font-size: 12px;
+      color: #989fb0;
+    }
+    .day-label {
+      text-align: center;
+      font-size: 10px;
+      color: #8f97a7;
+      margin: 10px 0 8px;
+      text-transform: uppercase;
+    }
+    .content {
+      min-height: calc(100dvh - 84px - 52px - 36px);
+      padding: 0 6px 0;
+    }
+    .message-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .message-row.right {
+      justify-content: flex-end;
+    }
+    .bubble {
+      min-height: 42px;
+      max-width: 74%;
+      border-radius: 10px;
+      border: 1px solid #d6dce7;
+      background: var(--bubble-left);
+    }
+    .message-row.right .bubble {
+      background: var(--bubble-right);
+      min-width: 120px;
+    }
+    .composer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 36px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+    }
+    .composer input {
+      border: 0;
+      outline: none;
+      background: transparent;
+      font-size: 10px;
+      color: #70798c;
+      padding: 0;
+    }
+    .attach {
+      color: #1c2b4d;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .send {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #001b46;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <img class="logo" src="assets/move-logo.svg" alt="MOVE" />
+  </header>
+
+  <section class="chat-head">
+    <button class="back" type="button" onclick="window.location.href='home-v2.html'" aria-label="Voltar">←</button>
+    <span class="avatar-sm">◌</span>
+    <div>
+      <p class="chat-title">Lancha Millenium 300</p>
+      <p class="chat-sub">Mateus Almeida</p>
+    </div>
+  </section>
+
+  <main class="content">
+    <p class="day-label">03 de Jan.</p>
+    <div class="message-row">
+      <span class="avatar-sm">◌</span>
+      <div class="bubble"></div>
+    </div>
+    <div class="message-row right">
+      <div class="bubble"></div>
+    </div>
+  </main>
+
+  <footer class="composer">
+    <input type="text" placeholder="Envie uma mensagem" aria-label="Envie uma mensagem" />
+    <span class="attach">⌖</span>
+    <span class="send">▲</span>
+  </footer>
+</body>
+</html>

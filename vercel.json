@@ -10,6 +10,10 @@
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/booking-confirm", "destination": "/booking-confirm.html" },
     { "source": "/payment", "destination": "/payment.html" },
+    { "source": "/pix-qrcode", "destination": "/pix-qrcode.html" },
+    { "source": "/payment-success", "destination": "/payment-success.html" },
+    { "source": "/payment-error", "destination": "/payment-error.html" },
+    { "source": "/chat-owner", "destination": "/chat-owner.html" },
     { "source": "/landing", "destination": "/landing.html" },
     { "source": "/b2b", "destination": "/landing-b2b.html" }
   ],

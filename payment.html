@@ -243,6 +243,118 @@
       font-size: 12px;
       line-height: 1.35;
     }
+
+    .card-panel {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 35;
+      background: #fff;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border-top: 1px solid var(--line);
+      box-shadow: 0 -8px 24px rgba(10, 47, 128, 0.12);
+      padding: 14px 12px calc(14px + env(safe-area-inset-bottom));
+      display: none;
+    }
+
+    .card-panel.open { display: block; }
+
+    .card-panel-title {
+      margin: 0 0 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #131b30;
+    }
+
+    .saved-cards {
+      border: 1px solid #d7deeb;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .saved-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      align-items: start;
+      padding: 9px 10px;
+      border-bottom: 1px solid #eef2f8;
+      cursor: pointer;
+    }
+
+    .saved-row:last-child { border-bottom: 0; }
+
+    .saved-row input { margin-top: 2px; }
+
+    .saved-main {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #1a2238;
+    }
+
+    .saved-sub {
+      margin: 2px 0 0;
+      color: #6f778a;
+      font-size: 12px;
+    }
+
+    .new-card-trigger {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #1c2c52;
+      text-align: left;
+      text-decoration: underline;
+      padding: 0 2px 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .new-card-form {
+      border: 1px solid #d7deeb;
+      border-radius: 10px;
+      padding: 10px;
+      display: none;
+      gap: 8px;
+      margin-bottom: 10px;
+      background: #fbfcff;
+    }
+
+    .new-card-form.open {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .new-card-form input {
+      width: 100%;
+      min-height: 36px;
+      border: 1px solid #d7deeb;
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 13px;
+      color: #1a2238;
+      outline: none;
+    }
+
+    .new-card-form .full { grid-column: 1 / -1; }
+
+    .card-pay-btn {
+      width: 100%;
+      min-height: 44px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 16px rgba(10, 47, 128, 0.25);
+    }
   </style>
 </head>
 <body>
@@ -297,6 +409,38 @@
     <p class="terms">Ao clicar em próximo, você concorda com nossos Termos de Serviço e Política de Privacidade.</p>
   </footer>
 
+  <section class="card-panel" id="card-panel" aria-label="Seleção de cartão">
+    <h3 class="card-panel-title">Selecione um cartão</h3>
+    <div class="saved-cards" id="saved-cards">
+      <label class="saved-row">
+        <input type="radio" name="saved-card" value="1028" />
+        <span>
+          <p class="saved-main">(Crédito) Elo terminado em 1028</p>
+          <p class="saved-sub">Selecione o número de parcelas</p>
+        </span>
+      </label>
+      <label class="saved-row">
+        <input type="radio" name="saved-card" value="4526" checked />
+        <span>
+          <p class="saved-main">(Crédito) Visa terminado em 4526</p>
+          <p class="saved-sub">2x de R$125,35</p>
+        </span>
+      </label>
+    </div>
+
+    <button type="button" class="new-card-trigger" id="new-card-trigger">Adicionar novo cartão de crédito</button>
+
+    <form class="new-card-form" id="new-card-form">
+      <input class="full" type="text" placeholder="Nome no cartão" />
+      <input class="full" type="text" placeholder="Número do cartão" />
+      <input type="text" placeholder="Validade (MM/AA)" />
+      <input type="text" placeholder="CVV" />
+      <input class="full" type="text" placeholder="CPF do titular" />
+    </form>
+
+    <button class="card-pay-btn" type="button" id="use-card-btn">Usar este método de pagamento</button>
+  </section>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const total = params.get('total');
@@ -305,14 +449,53 @@
     }
 
     const options = Array.from(document.querySelectorAll('.payment-option'));
+    const cardPanel = document.getElementById('card-panel');
+    const footer = document.querySelector('.footer');
+    const nextPaymentBtn = document.getElementById('next-payment');
+    const newCardTrigger = document.getElementById('new-card-trigger');
+    const newCardForm = document.getElementById('new-card-form');
+    const useCardBtn = document.getElementById('use-card-btn');
+
+    const openCardPanel = () => {
+      cardPanel.classList.add('open');
+      footer.style.display = 'none';
+    };
+
+    const closeCardPanel = () => {
+      cardPanel.classList.remove('open');
+      footer.style.display = '';
+    };
+
+    const goToCardResult = () => {
+      const status = (params.get('payment_status') || 'approved').toLowerCase();
+      const destination = status === 'error' ? 'payment-error.html' : 'payment-success.html';
+      window.location.href = `${destination}?${params.toString()}`;
+    };
+
     options.forEach((option) => {
       option.addEventListener('click', () => {
         options.forEach((item) => item.classList.remove('active'));
         option.classList.add('active');
+        if (option.dataset.method === 'card') {
+          openCardPanel();
+        } else {
+          closeCardPanel();
+        }
       });
     });
 
-    document.getElementById('next-payment').addEventListener('click', () => {});
+    nextPaymentBtn.addEventListener('click', () => {
+      const selected = document.querySelector('.payment-option.active')?.dataset.method || 'pix';
+      if (selected === 'pix') {
+        window.location.href = `pix-qrcode.html?${params.toString()}`;
+      }
+    });
+
+    newCardTrigger.addEventListener('click', () => {
+      newCardForm.classList.toggle('open');
+    });
+
+    useCardBtn.addEventListener('click', goToCardResult);
   </script>
 </body>
 </html>

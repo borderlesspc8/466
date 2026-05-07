@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Pagamento PIX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f2f3f5;
+      --card: #ffffff;
+      --blue: #03235f;
+      --text: #181f2d;
+      --muted: #4f5668;
+      --line: #dde2ea;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .header {
+      height: 84px;
+      background: linear-gradient(90deg, #04163a 0%, #062967 70%, #0a3a8e 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      top: -8px;
+      width: 94px;
+      height: 116px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 28% 35%, rgba(78, 132, 255, 0.5), rgba(28, 78, 182, 0.35) 56%, rgba(16, 43, 105, 0) 74%);
+    }
+
+    .logo {
+      height: 30px;
+      width: auto;
+      z-index: 1;
+    }
+
+    .page {
+      padding: 12px 8px 92px;
+      min-height: calc(100dvh - 84px);
+    }
+
+    .title {
+      margin: 0 0 10px;
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #d7dde7;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(20, 35, 65, 0.08);
+      padding: 10px 8px;
+      max-width: 320px;
+    }
+
+    .qr {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #eceff4;
+      border-radius: 2px;
+      background: #fff;
+      display: block;
+    }
+
+    .copy-code {
+      margin: 10px 0 0;
+      text-align: center;
+      font-size: 14px;
+      color: #4e5668;
+      word-break: break-all;
+      line-height: 1.25;
+      padding: 0 8px;
+    }
+
+    .processing {
+      position: fixed;
+      left: 8px;
+      right: 8px;
+      bottom: 44px;
+      height: 30px;
+      border: 0;
+      border-radius: 7px;
+      background: #707070;
+      color: #ececec;
+      font-size: 21px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 44px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 10px;
+      color: #0f1a2f;
+    }
+
+    .nav-item {
+      display: grid;
+      justify-items: center;
+      gap: 2px;
+      min-width: 56px;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <img class="logo" src="assets/move-logo.svg" alt="MOVE" />
+  </header>
+
+  <main class="page">
+    <h1 class="title">Pague através do QR Code ou copie o código</h1>
+
+    <section class="card">
+      <svg class="qr" viewBox="0 0 120 120" role="img" aria-label="QR Code PIX">
+        <rect width="120" height="120" fill="#fff" />
+        <rect x="8" y="8" width="30" height="30" fill="#333b45" />
+        <rect x="12" y="12" width="22" height="22" fill="#fff" />
+        <rect x="16" y="16" width="14" height="14" fill="#333b45" />
+        <rect x="82" y="8" width="30" height="30" fill="#333b45" />
+        <rect x="86" y="12" width="22" height="22" fill="#fff" />
+        <rect x="90" y="16" width="14" height="14" fill="#333b45" />
+        <rect x="8" y="82" width="30" height="30" fill="#333b45" />
+        <rect x="12" y="86" width="22" height="22" fill="#fff" />
+        <rect x="16" y="90" width="14" height="14" fill="#333b45" />
+        <rect x="46" y="10" width="6" height="6" fill="#333b45" />
+        <rect x="56" y="10" width="6" height="6" fill="#333b45" />
+        <rect x="66" y="10" width="6" height="6" fill="#333b45" />
+        <rect x="52" y="20" width="6" height="6" fill="#333b45" />
+        <rect x="62" y="20" width="6" height="6" fill="#333b45" />
+        <rect x="46" y="30" width="6" height="6" fill="#333b45" />
+        <rect x="56" y="30" width="6" height="6" fill="#333b45" />
+        <rect x="66" y="30" width="6" height="6" fill="#333b45" />
+        <rect x="44" y="44" width="8" height="8" fill="#333b45" />
+        <rect x="56" y="44" width="8" height="8" fill="#333b45" />
+        <rect x="68" y="44" width="8" height="8" fill="#333b45" />
+        <rect x="80" y="44" width="8" height="8" fill="#333b45" />
+        <rect x="44" y="56" width="8" height="8" fill="#333b45" />
+        <rect x="60" y="56" width="8" height="8" fill="#333b45" />
+        <rect x="76" y="56" width="8" height="8" fill="#333b45" />
+        <rect x="92" y="56" width="8" height="8" fill="#333b45" />
+        <rect x="44" y="68" width="8" height="8" fill="#333b45" />
+        <rect x="56" y="68" width="8" height="8" fill="#333b45" />
+        <rect x="68" y="68" width="8" height="8" fill="#333b45" />
+        <rect x="80" y="68" width="8" height="8" fill="#333b45" />
+        <rect x="92" y="68" width="8" height="8" fill="#333b45" />
+        <rect x="46" y="84" width="8" height="8" fill="#333b45" />
+        <rect x="58" y="84" width="8" height="8" fill="#333b45" />
+        <rect x="70" y="84" width="8" height="8" fill="#333b45" />
+        <rect x="82" y="84" width="8" height="8" fill="#333b45" />
+        <rect x="94" y="84" width="8" height="8" fill="#333b45" />
+        <rect x="58" y="96" width="8" height="8" fill="#333b45" />
+        <rect x="70" y="96" width="8" height="8" fill="#333b45" />
+        <rect x="82" y="96" width="8" height="8" fill="#333b45" />
+      </svg>
+      <p class="copy-code" id="pix-code">32423424-67457475474-235264576856901784592</p>
+    </section>
+  </main>
+
+  <button class="processing" type="button" id="process-payment">Processando pagamento</button>
+
+  <nav class="bottom-nav" aria-label="Navegação inferior">
+    <div class="nav-item"><span class="nav-icon">⌕</span><span>Explorar</span></div>
+    <div class="nav-item"><span class="nav-icon">📄</span><span>Reservas</span></div>
+    <div class="nav-item"><span class="nav-icon">💬</span><span>Mensagens</span></div>
+    <div class="nav-item"><span class="nav-icon">◌</span><span>Meu perfil</span></div>
+  </nav>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const total = params.get('total');
+    if (total) {
+      document.title = `Pagamento PIX - ${total}`;
+    }
+
+    const status = (params.get('payment_status') || 'approved').toLowerCase();
+    const destination = status === 'error' ? 'payment-error.html' : 'payment-success.html';
+    const nextParams = new URLSearchParams(params.toString());
+
+    const goToResult = () => {
+      window.location.href = `${destination}?${nextParams.toString()}`;
+    };
+
+    document.getElementById('process-payment').addEventListener('click', goToResult);
+    setTimeout(goToResult, 1800);
+  </script>
+</body>
+</html>
