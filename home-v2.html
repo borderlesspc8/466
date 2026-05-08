@@ -1,809 +1,1223 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>M.O.V.E. — Home</title>
+  <title>MOVE - Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ─────────────────────── */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
 
     :root {
-      --navy: #031734;
-      --navy-90: rgba(3, 23, 52, 0.9);
-      --gold: #c8901e;
-      --gold-btn: #b87d18;
-      --text: #171717;
-      --text-muted: #6b7280;
-      --border: #e5e7eb;
-      --bg: #f4f5f7;
+      --bg: #eff2f2;
       --white: #fff;
-      --radius-card: 16px;
-      --bottombar-h: 64px;
+      --text: #162235;
+      --muted: #6f7787;
+      --chip-border: #d8dde6;
+      --navy: #031735;
+      --blue-btn: #16385f;
+      --gold: #d3aa4a;
+      --card-shadow: 0 5px 14px rgba(9, 27, 52, 0.14);
+      --bottom-h: 62px;
+      --fs-xs: clamp(8px, 2.3vw, 10px);
+      --fs-sm: clamp(10px, 2.8vw, 12px);
+      --fs-md: clamp(12px, 3.4vw, 15px);
+      --fs-lg: clamp(15px, 4.2vw, 18px);
+      --fs-xl: clamp(18px, 5.4vw, 24px);
+      --fs-xxl: clamp(20px, 6.6vw, 30px);
     }
 
-    html, body {
-      height: 100%;
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
       font-family: Inter, Arial, sans-serif;
-      background: var(--bg);
       color: var(--text);
-      overscroll-behavior: none;
+      background: var(--bg);
     }
 
-    /* ── Page wrapper ─────────────────────── */
-    .page {
-      display: flex;
-      flex-direction: column;
+    .app {
       min-height: 100dvh;
+      padding-bottom: var(--bottom-h);
     }
 
-    .scroll-body {
-      flex: 1;
-      overflow-y: auto;
-      padding-bottom: var(--bottombar-h);
-    }
-
-    /* ── TopBar ───────────────────────────── */
-    .topbar {
-      position: fixed;
+    .top {
+      background: linear-gradient(90deg, #051735 0%, #07234f 60%, #0a3989 100%);
+      padding: 14px 14px 12px;
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      z-index: 30;
-      background: linear-gradient(to bottom, rgba(3, 23, 52, 0.66), rgba(3, 23, 52, 0.2));
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-      padding: 0 16px;
+      z-index: 20;
     }
 
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .burger-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding: 4px;
-    }
-
-    .burger-btn span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-    }
-
-    .topbar-logo {
-      height: 28px;
+    .logo {
+      height: 24px;
       width: auto;
       display: block;
+      margin-bottom: 10px;
     }
 
-    .topbar-actions {
+    .search {
+      position: relative;
+      background: #f5f7fa;
+      border: 1px solid #d5dbe5;
+      border-radius: 10px;
+      min-height: 36px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      padding: 0 34px 0 12px;
     }
 
-    .icon-btn {
-      width: 38px;
-      height: 38px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: #fff;
-    }
-
-    .icon-btn svg {
-      width: 22px;
-      height: 22px;
-      stroke: #fff;
-      fill: none;
-      stroke-width: 1.8;
-    }
-
-    /* ── Hero ─────────────────────────────── */
-    .hero {
-      position: relative;
-      min-height: 310px;
-      background: url("assets/login-bg.png") center/cover no-repeat;
-      display: flex;
-      align-items: flex-end;
-      padding-bottom: 76px;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(3, 23, 52, 0.25) 0%,
-        rgba(3, 23, 52, 0.68) 100%
-      );
-    }
-
-    .hero-text {
-      position: relative;
-      z-index: 2;
-      padding: 0 20px;
-      color: #fff;
-      font-size: clamp(1.35rem, 6vw, 1.75rem);
-      font-weight: 700;
-      line-height: 1.25;
-      text-align: center;
-      width: 100%;
-    }
-
-    /* ── Search Card ──────────────────────── */
-    .search-wrap {
-      padding: 0 16px;
-      margin-top: -52px;
-      position: relative;
-      z-index: 10;
-    }
-
-    .search-card {
-      background: #fff;
-      border-radius: var(--radius-card);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
-      padding: 18px;
-    }
-
-    .search-card-title {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 14px;
-      color: var(--text);
-    }
-
-    .search-fields {
-      display: flex;
-      align-items: stretch;
-      border: 1.5px solid var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .search-field {
-      flex: 1;
-      min-width: 0;
-      padding: 10px 16px;
-    }
-
-    .search-field + .search-field {
-      border-left: 1.5px solid var(--border);
-    }
-
-    .search-field-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.1;
-    }
-
-    .search-field-input {
-      display: block;
+    .search input {
       width: 100%;
       border: 0;
       outline: none;
       background: transparent;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-      line-height: 1.1;
-      padding: 0;
-      appearance: none;
-      -webkit-appearance: none;
+      color: #6d7483;
+      font-size: var(--fs-sm);
       font-family: inherit;
     }
 
-    .search-field-input::placeholder { color: var(--text-muted); }
-
-    .search-row {
-      display: contents;
-    }
-
-    .search-btn {
-      width: 52px;
-      min-width: 52px;
-      height: 52px;
-      margin: 6px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 32% 30%, #dec88d 0%, #b18a3d 68%, #9a7834 100%);
-      border: none;
+    .search button {
+      position: absolute;
+      right: 8px;
+      width: 22px;
+      height: 22px;
+      border: 0;
+      background: transparent;
+      color: #7b8596;
+      font-size: 14px;
       cursor: pointer;
-      display: grid;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 10px rgba(183, 140, 58, 0.45);
+      padding: 0;
+      line-height: 1;
     }
 
-    .search-btn svg {
-      width: 18px;
-      height: 18px;
-      stroke: #fff;
-      fill: none;
-      stroke-width: 2.2;
+    .search-mode {
+      display: none;
+      background: #eceeef;
+      min-height: calc(100dvh - var(--bottom-h));
+      padding: 8px 8px 80px;
     }
 
-    /* ── Categories ───────────────────────── */
-    .section {
-      padding: 22px 0 0;
-    }
-
-    .section-header {
-      padding: 0 16px;
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .category-scroll {
-      display: flex;
-      gap: 12px;
-      padding: 0 16px 4px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .category-scroll::-webkit-scrollbar { display: none; }
-
-    .category-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      flex-shrink: 0;
-      min-width: 80px;
-      padding: 10px 8px 12px;
-      background: #fff;
-      border-radius: 14px;
-      border: 1.5px solid var(--border);
-      transition: border-color 0.15s;
-    }
-
-    .category-item.active,
-    .category-item:hover {
-      border-color: var(--gold);
-    }
-
-    .category-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--bg);
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-    }
-
-    .category-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-      text-align: center;
-    }
-
-    /* ── Nearby cards ─────────────────────── */
-    .cards-scroll {
-      display: flex;
-      gap: 14px;
-      padding: 0 16px 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .cards-scroll::-webkit-scrollbar { display: none; }
-
-    .vehicle-card {
-      flex-shrink: 0;
-      width: 200px;
-      background: #fff;
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-      cursor: pointer;
-    }
-
-    .vehicle-card-img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      background: url("assets/login-bg.png") center/cover no-repeat;
+    .search-mode.open {
       display: block;
     }
 
-    .vehicle-card-body {
-      padding: 10px 12px 12px;
+    .search-accordion {
+      display: grid;
+      gap: 8px;
     }
 
-    .vehicle-card-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
+    .search-back-row {
       display: flex;
       align-items: center;
-      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .search-back-btn {
+      border: 0;
+      background: transparent;
+      color: #2f4058;
+      font-size: 20px;
+      line-height: 1;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .search-block {
+      background: #f2f3f4;
+      border: 1px solid #d6dbe3;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(12, 22, 38, 0.1);
+      overflow: hidden;
+    }
+
+    .search-block summary {
+      list-style: none;
+      cursor: pointer;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      font-size: var(--fs-xl);
+      letter-spacing: -0.2px;
+      color: #616c7e;
+    }
+
+    .search-block summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .search-block summary strong {
+      color: #24374f;
+      font-size: var(--fs-xxl);
+      font-weight: 500;
+    }
+
+    .search-body {
+      border-top: 1px solid #dfe3ea;
+      padding: 10px 12px 8px;
+      background: #f3f4f5;
+    }
+
+    .where-input {
+      min-height: 42px;
+      border-radius: 8px;
+      border: 1px solid #c3cad5;
+      background: #f1f3f6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      color: #8a94a4;
+      font-size: var(--fs-md);
+    }
+
+    .where-input input {
+      width: 100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: #526074;
+      font-size: var(--fs-md);
+      font-family: inherit;
+    }
+
+    .where-pin {
+      width: 14px;
+      height: 14px;
+      color: #7f8a9a;
+    }
+
+    .dest-suggest {
+      margin-top: 9px;
+      color: #9ba3b1;
+      font-size: var(--fs-xs);
+      text-transform: lowercase;
+    }
+
+    .dest-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 7px;
+    }
+
+    .dest-item {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: #647083;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 3px 2px;
+      font-family: inherit;
+    }
+
+    .dest-item:hover {
+      background: rgba(205, 214, 226, 0.32);
+    }
+
+    .dest-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #657185;
+      background: #eceff4;
+    }
+
+    .dest-icon svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .dest-item p {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .dest-item .dest-main {
+      font-size: var(--fs-sm);
+      color: #3a4b62;
+    }
+
+    .dest-item .dest-sub {
+      font-size: var(--fs-xs);
+      color: #8b95a5;
+    }
+
+    .calendar {
+      border-top: 1px solid #e0e4ea;
+      margin-top: 5px;
+      padding-top: 7px;
+    }
+
+    .calendar h4 {
+      margin: 0 0 6px;
+      color: #637087;
+      font-size: var(--fs-sm);
+      font-weight: 500;
+    }
+
+    .week {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      color: #9aa1af;
+      font-size: var(--fs-xs);
       margin-bottom: 4px;
     }
 
-    .star {
-      color: #f5a623;
-      font-size: 12px;
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      gap: 2px 0;
+      color: #818a9a;
+      font-size: var(--fs-sm);
     }
 
-    .vehicle-card-title {
-      font-size: 13px;
+    .days span {
+      min-height: 24px;
+      display: grid;
+      place-items: center;
+    }
+
+    .type-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .type-item {
+      min-height: 44px;
+      border-bottom: 1px solid #e2e6ec;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px 0 0;
+    }
+
+    .type-item:last-child {
+      border-bottom: 0;
+    }
+
+    .type-info p {
+      margin: 0;
+      line-height: 1.15;
+    }
+
+    .type-main {
+      font-size: var(--fs-md);
+      color: #253851;
+    }
+
+    .type-sub {
+      font-size: var(--fs-xs);
+      color: #8a93a2;
+    }
+
+    .check {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid #b8c1d1;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      color: transparent;
+      position: relative;
+    }
+
+    .check.on {
+      background: #44a44e;
+      border-color: #44a44e;
+      color: #fff;
+    }
+
+    .check.off::before {
+      content: "/";
+      color: #acb4c0;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .search-caret {
+      display: flex;
+      justify-content: center;
+      padding-top: 4px;
+    }
+
+    .search-caret svg {
+      width: 16px;
+      height: 16px;
+      stroke: #7f8a9a;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .search-actions {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: var(--bottom-h);
+      z-index: 24;
+      background: #eceeef;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px 10px;
+    }
+
+    .clear-btn {
+      border: 0;
+      background: transparent;
+      color: #4b5362;
+      font-size: clamp(18px, 4.8vw, 24px);
+      line-height: 1;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      padding: 8px 0 7px;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: -0.2px;
+    }
+
+    .do-search-btn {
+      min-width: 146px;
+      border: 0;
+      background: #021a3d;
+      color: #fff;
+      border-radius: 10px;
+      min-height: 50px;
+      padding: 0 18px;
+      font-size: clamp(14px, 4vw, 18px);
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: inherit;
+      letter-spacing: -0.2px;
+    }
+
+    .do-search-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .chips-wrap {
+      background: var(--white);
+      padding: 8px 10px 10px;
+      border-bottom: 1px solid #e4e8ee;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .chips::-webkit-scrollbar,
+    .row-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chip {
+      flex: 0 0 auto;
+      border: 1px solid var(--chip-border);
+      background: #f9fafc;
+      min-height: 28px;
+      border-radius: 999px;
+      padding: 0 14px;
+      color: #616b7b;
+      font-size: var(--fs-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      border-color: #97abc8;
+      color: #2f4666;
+      background: #f2f6fc;
+    }
+
+    .main-carousel {
+      padding: 10px 10px 0;
+    }
+
+    .hero-card {
+      position: relative;
+      height: 170px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      background: #1d2f46;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/login-bg.png") center/cover no-repeat;
+      filter: saturate(1.15);
+      transform: scale(1.04);
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(2, 13, 28, 0.75) 22%, rgba(7, 24, 49, 0.18) 72%);
+    }
+
+    .rate-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      z-index: 2;
+      background: rgba(245, 247, 250, 0.96);
+      color: #1c2738;
+      border-radius: 999px;
+      min-height: 20px;
+      padding: 0 7px;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--text);
-      margin-bottom: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .hero-content {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .hero-title {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(16px, 4.8vw, 24px);
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+    }
+
+    .hero-meta {
+      margin-top: 4px;
+      color: #d9e2ef;
+      font-size: var(--fs-sm);
       line-height: 1.25;
     }
 
-    .vehicle-card-location {
-      font-size: 11px;
-      color: var(--text-muted);
+    .details-btn {
+      border: 0;
+      background: #173d67;
+      color: #fff;
+      min-height: 34px;
+      border-radius: 11px;
+      padding: 0 14px;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: none;
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .details-btn::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      background: #f3f6fb;
+      border-radius: 14px;
+      z-index: -1;
+    }
+
+    .dots {
       display: flex;
       align-items: center;
-      gap: 3px;
+      justify-content: center;
+      gap: 4px;
+      margin: 8px 0 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #d6dbe4;
+    }
+
+    .dot.active {
+      width: 18px;
+      background: var(--gold);
+    }
+
+    .section {
+      padding: 2px 10px 0;
+    }
+
+    .section-head {
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 6px;
     }
 
-    .vehicle-card-price {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--gold);
-    }
-
-    .vehicle-card-price span {
+    .section h2 {
+      margin: 0;
+      font-size: clamp(16px, 4.8vw, 24px);
+      line-height: 1;
+      letter-spacing: -0.45px;
       font-weight: 400;
-      color: var(--text-muted);
-      font-size: 11px;
+      color: #3a4b5f;
     }
 
-    /* ── Bottom Nav ───────────────────────── */
+    .section-arrow {
+      border: 0;
+      background: transparent;
+      color: #8994a4;
+      font-size: 16px;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .row-scroll {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding-bottom: 3px;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .row-scroll.dragging {
+      cursor: grabbing;
+    }
+
+    .mini-card {
+      position: relative;
+      width: 132px;
+      height: 126px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex: 0 0 auto;
+      box-shadow: 0 3px 10px rgba(12, 25, 44, 0.2);
+      color: #fff;
+      background: #29466a;
+    }
+
+    .mini-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("assets/login-bg.png") center/cover no-repeat;
+      transform: scale(1.08);
+      filter: saturate(1.1) brightness(0.95);
+    }
+
+    .mini-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(6, 13, 27, 0.82) 22%, rgba(6, 13, 27, 0.14) 76%);
+    }
+
+    .mini-body {
+      position: absolute;
+      z-index: 2;
+      left: 7px;
+      right: 7px;
+      bottom: 7px;
+    }
+
+    .mini-title {
+      margin: 0;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .mini-sub {
+      margin: 2px 0;
+      font-size: clamp(7px, 2vw, 9px);
+      color: #d2dae8;
+      line-height: 1.2;
+    }
+
+    .mini-price {
+      margin: 0;
+      font-size: var(--fs-md);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .mini-price span {
+      font-size: clamp(7px, 2vw, 9px);
+      color: #ccd6e6;
+      font-weight: 500;
+    }
+
+    .mini-rate {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      z-index: 2;
+      color: #efc25e;
+      font-size: 8px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+    }
+
     .bottom-nav {
       position: fixed;
-      bottom: 0;
       left: 0;
       right: 0;
-      z-index: 30;
-      height: var(--bottombar-h);
-      background: #fff;
-      border-top: 1px solid var(--border);
+      bottom: 0;
+      min-height: var(--bottom-h);
+      background: #f9fbff;
+      border-top: 1px solid #dde3ec;
       display: flex;
       align-items: center;
+      z-index: 25;
     }
 
-    .nav-item {
+    .tab {
       flex: 1;
+      border: 0;
+      background: transparent;
+      color: #4f5e73;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 2px;
+      min-height: var(--bottom-h);
+      font-size: var(--fs-xs);
       cursor: pointer;
-      padding: 8px 0;
-      background: none;
-      border: none;
-      color: var(--text-muted);
+      font-family: inherit;
     }
 
-    .nav-item.active {
-      color: var(--navy);
-    }
-
-    .nav-item svg {
-      width: 24px;
-      height: 24px;
+    .tab svg {
+      width: 18px;
+      height: 18px;
       stroke: currentColor;
       fill: none;
       stroke-width: 1.8;
     }
 
-    .nav-item.active svg {
-      fill: var(--navy);
-      stroke: var(--navy);
+    .tab.active {
+      color: #0f223f;
+      font-weight: 600;
     }
 
-    .nav-label {
-      font-size: 10px;
-      font-weight: 500;
-    }
-
-    /* ── Drawer (menu lateral) ────────────── */
-    .drawer-overlay {
+    .home-content.search-open {
       display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      background: rgba(0, 0, 0, 0.45);
     }
-
-    .drawer-overlay.open { display: block; }
-
-    .drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 41;
-      width: 280px;
-      background: var(--navy);
-      transform: translateX(-100%);
-      transition: transform 0.28s ease;
-      display: flex;
-      flex-direction: column;
-      padding: 56px 20px 24px;
-      gap: 4px;
-    }
-
-    .drawer.open { transform: translateX(0); }
-
-    .drawer-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #fff;
-      font-size: 22px;
-      line-height: 1;
-      padding: 4px 8px;
-    }
-
-    .drawer-logo {
-      height: 28px;
-      width: auto;
-      margin-bottom: 32px;
-    }
-
-    .drawer-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #d8e6fb;
-      font-size: 16px;
-      font-weight: 500;
-      padding: 12px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      background: none;
-      text-align: left;
-      width: 100%;
-      text-decoration: none;
-    }
-
-    .drawer-item svg {
-      width: 20px;
-      height: 20px;
-      stroke: #d8e6fb;
-      fill: none;
-      stroke-width: 1.8;
-      flex-shrink: 0;
-    }
-
-    .drawer-item:hover { background: rgba(255,255,255,0.08); }
-
-    .drawer-item.drawer-logout {
-      color: #ef9d9d;
-      margin-top: auto;
-    }
-
-    .drawer-item.drawer-logout svg { stroke: #ef9d9d; }
-
-    /* ── Section spacing ──────────────────── */
-    .section-last { padding-bottom: 8px; }
   </style>
 </head>
 <body>
-<div class="page">
+  <div class="app">
+    <header class="top">
+      <img class="logo" src="assets/move-logo.svg" alt="MOVE" />
+      <form class="search" id="search-form">
+        <input type="text" placeholder="Qual sera sua proxima aventura?" aria-label="Buscar aventura" />
+        <button type="submit" aria-label="Buscar">⌕</button>
+      </form>
+    </header>
 
-  <!-- ── TopBar ──────────────────────────── -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="burger-btn" id="burger-btn" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-      <img class="topbar-logo" src="assets/move-logo.svg" alt="M.O.V.E." />
+    <div class="home-content" id="home-content">
+    <section class="chips-wrap" aria-label="Categorias de veiculos">
+      <div class="chips">
+        <button class="chip active" type="button">Lancha</button>
+        <button class="chip" type="button">Jet Ski</button>
+        <button class="chip" type="button">UTV</button>
+        <button class="chip" type="button">Quadriciclo</button>
+      </div>
+    </section>
+
+    <main>
+      <section class="main-carousel" aria-label="Destaques">
+        <article class="hero-card">
+          <span class="rate-badge" id="hero-rate">4.9 ★</span>
+          <div class="hero-content">
+            <div>
+              <h1 class="hero-title" id="hero-title">Lancha Riva 90' Argo</h1>
+              <p class="hero-meta" id="hero-meta">R$ 420,00 por dia<br />Santos, SP</p>
+            </div>
+            <button class="details-btn" type="button" onclick="window.location.href='booking-confirm.html'">Ver detalhes</button>
+          </div>
+        </article>
+        <div class="dots" aria-hidden="true">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Perto de voce">
+        <div class="section-head">
+          <h2>Perto de voce</h2>
+          <button class="section-arrow" type="button" aria-label="Ver mais">→</button>
+        </div>
+        <div class="row-scroll">
+          <article class="mini-card">
+            <span class="mini-rate">4.9 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Lancha Millenium 300</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.8 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Utv 1250CC</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.7 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Jet Ski Waverunner</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Melhores avaliacoes">
+        <div class="section-head">
+          <h2>Melhores avaliacoes</h2>
+          <button class="section-arrow" type="button" aria-label="Ver mais">→</button>
+        </div>
+        <div class="row-scroll">
+          <article class="mini-card">
+            <span class="mini-rate">4.9 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Jetski Waverunner</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.9 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Quadriciclo Pro ATV</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.8 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Lancha Millenium 300</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Melhores servicos">
+        <div class="section-head">
+          <h2>Melhores servicos</h2>
+          <button class="section-arrow" type="button" aria-label="Ver mais">→</button>
+        </div>
+        <div class="row-scroll">
+          <article class="mini-card">
+            <span class="mini-rate">4.9 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Lancha Prime Service</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.8 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">Jet Ski Full Care</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+          <article class="mini-card">
+            <span class="mini-rate">4.7 ★</span>
+            <div class="mini-body">
+              <p class="mini-title">UTV Adventure Plus</p>
+              <p class="mini-sub">Santos, SP - Santos</p>
+              <p class="mini-price">R$ 251,98 <span>por 3 dias</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
     </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" aria-label="Mensagens">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+
+    <section class="search-mode" id="search-mode" aria-label="Busca avancada">
+      <div class="search-back-row">
+        <button class="search-back-btn" type="button" id="search-back-btn" aria-label="Voltar">←</button>
+      </div>
+      <div class="search-accordion">
+        <details class="search-block" open data-key="where">
+          <summary><strong>Onde?</strong> <span id="where-summary-text">Buscar destino</span></summary>
+          <div class="search-body">
+            <div class="where-input">
+              <svg class="where-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11z"/><circle cx="12" cy="10" r="2.3"/></svg>
+              <input id="where-search-input" type="text" placeholder="Buscar destino" aria-label="Buscar destino" />
+            </div>
+            <p class="dest-suggest">destinos sugeridos</p>
+            <div class="dest-list">
+              <button class="dest-item" type="button" data-destination="Perto de voce">
+                <span class="dest-icon" style="background:#f4ebe6; color:#b29c7b;">
+                  <svg viewBox="0 0 24 24"><path d="M3 11l18-8-7 18-2-7-9-3z"/></svg>
+                </span>
+                <div>
+                  <p class="dest-main">Perto de voce</p>
+                  <p class="dest-sub">Descubra o que ha perto de voce</p>
+                </div>
+              </button>
+              <button class="dest-item" type="button" data-destination="Balneario Camboriu, Santa Catarina">
+                <span class="dest-icon" style="background:#e5eef9; color:#4d78b9;">
+                  <svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M6 20V7l6-3 6 3v13"/><path d="M10 10h.01M14 10h.01M10 13h.01M14 13h.01"/></svg>
+                </span>
+                <div>
+                  <p class="dest-main">Balneario Camboriu, Santa Catarina</p>
+                  <p class="dest-sub">Ideal para viagens no fim de semana</p>
+                </div>
+              </button>
+              <button class="dest-item" type="button" data-destination="Rio de Janeiro, Rio de Janeiro">
+                <span class="dest-icon">
+                  <svg viewBox="0 0 24 24"><path d="M3 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M5 9l6 6"/><path d="M12 6l3 3"/></svg>
+                </span>
+                <div>
+                  <p class="dest-main">Rio de Janeiro, Rio de Janeiro</p>
+                  <p class="dest-sub">Destino popular por suas praias</p>
+                </div>
+              </button>
+              <button class="dest-item" type="button" data-destination="Penha, Santa Catarina">
+                <span class="dest-icon" style="background:#fdeced; color:#e06a6e;">
+                  <svg viewBox="0 0 24 24"><path d="M4 10h16v10H4z"/><path d="M12 10v10"/><path d="M4 14h16"/><path d="M8 10c0-2 2-3 4-1"/><path d="M16 10c0-2-2-3-4-1"/></svg>
+                </span>
+                <div>
+                  <p class="dest-main">Penha, Santa Catarina</p>
+                  <p class="dest-sub">Destino popular 2</p>
+                </div>
+              </button>
+              <button class="dest-item" type="button" data-destination="Porto Alegre, Rio Grande do Sul">
+                <span class="dest-icon" style="background:#e5f4e8; color:#5c9f66;">
+                  <svg viewBox="0 0 24 24"><path d="M4 20V6h9v14"/><path d="M13 20V11h7v9"/><path d="M7 9h.01M10 9h.01M7 12h.01M10 12h.01"/></svg>
+                </span>
+                <div>
+                  <p class="dest-main">Porto Alegre, Rio Grande do Sul</p>
+                  <p class="dest-sub">Destino popular 1</p>
+                </div>
+              </button>
+            </div>
+            <div class="search-caret"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+        </details>
+
+        <details class="search-block" data-key="when">
+          <summary><strong>Quando?</strong> <span>Selecionar datas</span></summary>
+          <div class="search-body">
+            <div class="calendar">
+              <h4>dezembro de 2025</h4>
+              <div class="week"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>
+              <div class="days">
+                <span></span><span></span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span>
+                <span>28</span><span>29</span><span>30</span><span>31</span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="calendar">
+              <h4>janeiro de 2026</h4>
+              <div class="days">
+                <span></span><span></span><span></span><span>1</span><span>2</span><span>3</span><span>4</span>
+                <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span>
+                <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span>
+                <span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span></span>
+              </div>
+            </div>
+            <div class="search-caret"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+        </details>
+
+        <details class="search-block" data-key="what">
+          <summary><strong>O que?</strong> <span>Selecionar veiculos</span></summary>
+          <div class="search-body">
+            <div class="type-list">
+              <div class="type-item" data-type="lancha">
+                <div class="type-info">
+                  <p class="type-main">Lancha</p>
+                  <p class="type-sub">Motos aquat.</p>
+                </div>
+                <span class="check on">✓</span>
+              </div>
+              <div class="type-item" data-type="jetski">
+                <div class="type-info">
+                  <p class="type-main">Jetski</p>
+                  <p class="type-sub">Moto aquatico.</p>
+                </div>
+                <span class="check off"></span>
+              </div>
+              <div class="type-item" data-type="quadriciclo">
+                <div class="type-info">
+                  <p class="type-main">Quadriciclo</p>
+                  <p class="type-sub">Moto de quatro rodas (ATV).</p>
+                </div>
+                <span class="check off"></span>
+              </div>
+              <div class="type-item" data-type="utv">
+                <div class="type-info">
+                  <p class="type-main">UTV</p>
+                  <p class="type-sub">Side-by-side.</p>
+                </div>
+                <span class="check off"></span>
+              </div>
+            </div>
+            <div class="search-caret"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <div class="search-actions" id="search-actions" style="display:none;">
+      <button class="clear-btn" type="button" id="clear-search">Limpar tudo</button>
+      <button class="do-search-btn" type="button" id="do-search-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l5 5"/></svg>
+        <span>Buscar</span>
       </button>
-      <button class="icon-btn" aria-label="Ajuda">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Navegacao principal">
+      <button class="tab active" type="button" aria-current="page">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Explorar</span>
       </button>
-      <button class="icon-btn" aria-label="Perfil" onclick="window.location.href='dashboard.html'">
+      <button class="tab" type="button" onclick="window.location.href='booking-confirm.html'">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Reservas</span>
+      </button>
+      <button class="tab" type="button" onclick="window.location.href='chat-owner.html'">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Mensagens</span>
+      </button>
+      <button class="tab" type="button" onclick="window.location.href='dashboard.html'">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Meu perfil</span>
       </button>
-    </div>
-  </header>
+    </nav>
+  </div>
 
-  <!-- ── Scroll body ─────────────────────── -->
-  <main class="scroll-body">
-
-    <!-- Hero -->
-    <section class="hero">
-      <p class="hero-text">Navegue pelas nossas lanchas e<br />descubra novas aventuras!</p>
-    </section>
-
-    <!-- Search Card -->
-    <div class="search-wrap">
-      <div class="search-card">
-        <p class="search-card-title">Busque sua próxima aventura</p>
-        <form class="search-fields" id="reservation-search-form">
-          <div class="search-field">
-            <label class="search-field-label" for="where-input">Onde?</label>
-            <input id="where-input" name="where" class="search-field-input" type="text" placeholder="Buscar destino" />
-          </div>
-          <div class="search-row">
-            <div class="search-field">
-              <label class="search-field-label" for="when-input">Quando?</label>
-              <input id="when-input" name="when" class="search-field-input" type="text" placeholder="Selecionar datas" />
-            </div>
-            <div class="search-field">
-              <label class="search-field-label" for="what-input">O que?</label>
-              <select id="what-input" name="what" class="search-field-input">
-                <option value="">Selecionar veículos</option>
-                <option>Lanchas</option>
-                <option>Jet Skis</option>
-                <option>Quadriciclos</option>
-                <option>UTVs</option>
-              </select>
-            </div>
-          </div>
-          <button class="search-btn" type="submit" aria-label="Buscar">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Categories -->
-    <section class="section">
-      <div class="category-scroll" role="list">
-        <div class="category-item active" role="listitem" aria-label="Lanchas">
-          <div class="category-icon">⛵</div>
-          <span class="category-label">Lanchas</span>
-        </div>
-        <div class="category-item" role="listitem" aria-label="Jet Skis">
-          <div class="category-icon">🛥️</div>
-          <span class="category-label">Jet Skis</span>
-        </div>
-        <div class="category-item" role="listitem" aria-label="Quadriciclos">
-          <div class="category-icon">🏍️</div>
-          <span class="category-label">Quadriciclos</span>
-        </div>
-        <div class="category-item" role="listitem" aria-label="UTVs">
-          <div class="category-icon">🚙</div>
-          <span class="category-label">UTVs</span>
-        </div>
-        <div class="category-item" role="listitem" aria-label="Barcos">
-          <div class="category-icon">🚤</div>
-          <span class="category-label">Barcos</span>
-        </div>
-        <div class="category-item" role="listitem" aria-label="Caiaques">
-          <div class="category-icon">🏄</div>
-          <span class="category-label">Caiaques</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Nearby -->
-    <section class="section section-last">
-      <div class="section-header">
-        <h2 class="section-title">Perto de você</h2>
-      </div>
-      <div class="cards-scroll">
-
-        <article class="vehicle-card">
-          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
-          <div class="vehicle-card-body">
-            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
-            <p class="vehicle-card-title">Lancha Millenium 300</p>
-            <p class="vehicle-card-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Brasília, DF – Lago Sul
-            </p>
-            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
-          </div>
-        </article>
-
-        <article class="vehicle-card">
-          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
-          <div class="vehicle-card-body">
-            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
-            <p class="vehicle-card-title">Lancha Millenium 300</p>
-            <p class="vehicle-card-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Brasília, DF – Lago Sul
-            </p>
-            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
-          </div>
-        </article>
-
-        <article class="vehicle-card">
-          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
-          <div class="vehicle-card-body">
-            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
-            <p class="vehicle-card-title">Lancha Millenium 300</p>
-            <p class="vehicle-card-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Brasília, DF – Lago Sul
-            </p>
-            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
-          </div>
-        </article>
-
-        <article class="vehicle-card">
-          <div class="vehicle-card-img" role="img" aria-label="Lancha Millenium 300"></div>
-          <div class="vehicle-card-body">
-            <p class="vehicle-card-subtitle">Jetski Waverunner <span class="star">★</span> 4.7</p>
-            <p class="vehicle-card-title">Lancha Millenium 300</p>
-            <p class="vehicle-card-location">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Brasília, DF – Lago Sul
-            </p>
-            <p class="vehicle-card-price">R$ 251,98 <span>por 6 dias</span></p>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ── Bottom Nav ───────────────────────── -->
-  <nav class="bottom-nav" aria-label="Navegação principal">
-    <button class="nav-item active" aria-label="Início" aria-current="page">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    </button>
-    <button class="nav-item" aria-label="Buscar">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </button>
-    <button class="nav-item" aria-label="Reservas">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    </button>
-    <button class="nav-item" aria-label="Mensagens">
-      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </button>
-    <button class="nav-item" aria-label="Perfil" onclick="window.location.href='dashboard.html'">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </button>
-  </nav>
-
-</div>
-
-<!-- ── Drawer ───────────────────────────── -->
-<div class="drawer-overlay" id="drawer-overlay"></div>
-<aside class="drawer" id="drawer" aria-label="Menu lateral">
-  <button class="drawer-close" id="drawer-close" aria-label="Fechar menu">✕</button>
-  <img class="drawer-logo" src="assets/move-logo.svg" alt="M.O.V.E." />
-
-  <a class="drawer-item" href="home-v2.html">
-    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Início
-  </a>
-  <button class="drawer-item">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    Buscar
-  </button>
-  <button class="drawer-item">
-    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    Reservas
-  </button>
-  <button class="drawer-item">
-    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    Mensagens
-  </button>
-  <a class="drawer-item" href="dashboard.html">
-    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    Perfil
-  </a>
-  <a class="drawer-item" href="landing.html">
-    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-    Landing B2C
-  </a>
-  <a class="drawer-item" href="landing-b2b.html">
-    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-    Landing B2B
-  </a>
-  <a class="drawer-item" href="login.html">
-    <svg viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-    Login / Cadastro
-  </a>
-  <button class="drawer-item drawer-logout" id="drawer-logout">
-    <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    Sair da conta
-  </button>
-</aside>
-
-<script>
-  // ── Drawer ──────────────────────────────
-  const burger = document.getElementById('burger-btn');
-  const drawer = document.getElementById('drawer');
-  const overlay = document.getElementById('drawer-overlay');
-  const closeBtn = document.getElementById('drawer-close');
-
-  const openDrawer = () => {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeDrawer = () => {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  };
-
-  burger.addEventListener('click', openDrawer);
-  closeBtn.addEventListener('click', closeDrawer);
-  overlay.addEventListener('click', closeDrawer);
-
-  // ── Category active state ────────────────
-  document.querySelectorAll('.category-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
-
-  // ── Bottom nav active state ──────────────
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-    });
-  });
-
-  // ── Logout ───────────────────────────────
-  document.getElementById('drawer-logout').addEventListener('click', () => {
-    localStorage.removeItem('move_user');
-    window.location.href = 'login.html';
-  });
-
-  // ── Start reservation flow from search ──
-  const searchForm = document.getElementById('reservation-search-form');
-  searchForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const where = document.getElementById('where-input').value.trim();
-    const when = document.getElementById('when-input').value.trim();
-    const what = document.getElementById('what-input').value.trim();
-
-    const query = new URLSearchParams({
-      where,
-      when,
-      what
+  <script>
+    document.getElementById("search-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      openSearchMode();
     });
 
-    window.location.href = `booking-confirm.html?${query.toString()}`;
-  });
-</script>
+    document.querySelectorAll(".chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        document.querySelectorAll(".chip").forEach(function (item) {
+          item.classList.remove("active");
+        });
+        chip.classList.add("active");
+      });
+    });
+
+    const searchInput = document.querySelector(".search input");
+    const whereSearchInput = document.getElementById("where-search-input");
+    const whereSummaryText = document.getElementById("where-summary-text");
+    const homeContent = document.getElementById("home-content");
+    const searchMode = document.getElementById("search-mode");
+    const searchActions = document.getElementById("search-actions");
+    const blocks = Array.from(document.querySelectorAll(".search-block"));
+    const destinationButtons = Array.from(document.querySelectorAll(".dest-item"));
+    const typeItems = Array.from(document.querySelectorAll(".type-item"));
+    let selectedType = "lancha";
+
+    function openSearchMode() {
+      homeContent.classList.add("search-open");
+      searchMode.classList.add("open");
+      searchActions.style.display = "flex";
+      searchInput.blur();
+    }
+
+    function closeSearchMode() {
+      homeContent.classList.remove("search-open");
+      searchMode.classList.remove("open");
+      searchActions.style.display = "none";
+    }
+
+    searchInput.addEventListener("focus", openSearchMode);
+    searchInput.addEventListener("click", openSearchMode);
+
+    blocks.forEach(function (block) {
+      block.addEventListener("toggle", function () {
+        if (!block.open) {
+          return;
+        }
+        blocks.forEach(function (other) {
+          if (other !== block) {
+            other.open = false;
+          }
+        });
+      });
+    });
+
+    document.getElementById("clear-search").addEventListener("click", function () {
+      blocks.forEach(function (block) {
+        block.open = false;
+      });
+      blocks[0].open = true;
+    });
+
+    document.getElementById("search-back-btn").addEventListener("click", closeSearchMode);
+
+    typeItems.forEach(function (item) {
+      item.addEventListener("click", function () {
+        typeItems.forEach(function (row) {
+          const check = row.querySelector(".check");
+          check.classList.remove("on");
+          check.classList.add("off");
+          check.textContent = "";
+        });
+        const currentCheck = item.querySelector(".check");
+        currentCheck.classList.add("on");
+        currentCheck.classList.remove("off");
+        currentCheck.textContent = "✓";
+        selectedType = item.dataset.type || "lancha";
+      });
+    });
+
+    document.getElementById("do-search-btn").addEventListener("click", function () {
+      const where = (whereSearchInput.value || "").trim();
+      const query = new URLSearchParams({ type: selectedType, where: where });
+      window.location.href = "search-results.html?" + query.toString();
+    });
+
+    destinationButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        const destination = button.dataset.destination || "";
+        whereSearchInput.value = destination;
+        whereSummaryText.textContent = destination || "Buscar destino";
+      });
+    });
+
+    whereSearchInput.addEventListener("input", function () {
+      const value = whereSearchInput.value.trim();
+      whereSummaryText.textContent = value || "Buscar destino";
+    });
+
+    const heroSlides = [
+      { title: "Lancha Riva 90' Argo", meta: "R$ 420,00 por dia<br />Santos, SP", rate: "4.9 ★" },
+      { title: "Jet Ski Wave Runner", meta: "R$ 310,00 por dia<br />Guaruja, SP", rate: "4.8 ★" },
+      { title: "UTV Adventure X", meta: "R$ 510,00 por dia<br />Atibaia, SP", rate: "4.7 ★" }
+    ];
+
+    const heroTitle = document.getElementById("hero-title");
+    const heroMeta = document.getElementById("hero-meta");
+    const heroRate = document.getElementById("hero-rate");
+    const heroDots = Array.from(document.querySelectorAll(".dots .dot"));
+    let currentSlide = 0;
+
+    function renderHeroSlide(index) {
+      const slide = heroSlides[index];
+      heroTitle.textContent = slide.title;
+      heroMeta.innerHTML = slide.meta;
+      heroRate.textContent = slide.rate;
+      heroDots.forEach(function (dot, dotIndex) {
+        dot.classList.toggle("active", dotIndex === index);
+      });
+    }
+
+    setInterval(function () {
+      currentSlide = (currentSlide + 1) % heroSlides.length;
+      renderHeroSlide(currentSlide);
+    }, 3500);
+
+    const draggableRows = Array.from(document.querySelectorAll(".row-scroll"));
+
+    draggableRows.forEach(function (row) {
+      let isDragging = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+
+      row.addEventListener("pointerdown", function (event) {
+        isDragging = true;
+        startX = event.clientX;
+        startScrollLeft = row.scrollLeft;
+        row.classList.add("dragging");
+        row.setPointerCapture(event.pointerId);
+      });
+
+      row.addEventListener("pointermove", function (event) {
+        if (!isDragging) {
+          return;
+        }
+        const delta = event.clientX - startX;
+        row.scrollLeft = startScrollLeft - delta;
+      });
+
+      function stopDragging(event) {
+        if (!isDragging) {
+          return;
+        }
+        isDragging = false;
+        row.classList.remove("dragging");
+        if (event && event.pointerId !== undefined && row.hasPointerCapture(event.pointerId)) {
+          row.releasePointerCapture(event.pointerId);
+        }
+      }
+
+      row.addEventListener("pointerup", stopDragging);
+      row.addEventListener("pointercancel", stopDragging);
+      row.addEventListener("pointerleave", function (event) {
+        if (event.buttons === 0) {
+          stopDragging(event);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
