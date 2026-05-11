@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="move-api-base" content="" />
   <title>Resultados da busca</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -119,6 +120,7 @@
     .item-image {
       position: relative;
       overflow: hidden;
+      background: #1e385b;
     }
 
     .item-image::before {
@@ -128,6 +130,30 @@
       background: url("assets/login-bg.png") center/cover no-repeat;
       transform: scale(1.05);
       filter: saturate(1.1);
+    }
+
+    .item-image.has-cover::before {
+      display: none;
+    }
+
+    .item-cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .list-status {
+      padding: 16px 14px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .list-status.error {
+      color: #b42318;
     }
 
     .item-content {
@@ -311,6 +337,8 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .tag.active {
@@ -412,79 +440,25 @@
         <button class="back" type="button" onclick="history.back()" aria-label="Voltar">←</button>
         <div class="toolbar-main">
           <p class="toolbar-title" id="toolbar-title">Lanchas por perto</p>
-          <p class="toolbar-sub">31 de dez de 2025 - 04 de jan de 2026</p>
+          <p class="toolbar-sub" id="toolbar-sub">Busca</p>
         </div>
         <button class="filter-btn" id="open-filter" type="button" aria-label="Filtrar">⚚</button>
       </div>
     </section>
 
-    <main class="list" aria-label="Resultados da busca">
-      <article class="item">
-        <div class="item-image"></div>
-        <div class="item-content">
-          <p class="item-title">Lancha Millenium 300</p>
-          <p class="item-rate">4.9 ★</p>
-          <p class="item-loc">📍 Brasilia, DF - Lago Sul</p>
-          <p class="item-price">R$ 251,98 <small>por 6 dias</small></p>
-          <div class="item-actions">
-            <button class="ghost-btn" type="button">Ver detalhes</button>
-            <button class="primary-btn" type="button">Alugar</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="item-image"></div>
-        <div class="item-content">
-          <p class="item-title">Lancha Millenium 300</p>
-          <p class="item-rate">4.9 ★</p>
-          <p class="item-loc">📍 Brasilia, DF - Lago Sul</p>
-          <p class="item-price">R$ 251,98 <small>por 6 dias</small></p>
-          <div class="item-actions">
-            <button class="ghost-btn" type="button">Ver detalhes</button>
-            <button class="primary-btn" type="button">Alugar</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="item-image"></div>
-        <div class="item-content">
-          <p class="item-title">Lancha Millenium 300</p>
-          <p class="item-rate">4.9 ★</p>
-          <p class="item-loc">📍 Brasilia, DF - Lago Sul</p>
-          <p class="item-price">R$ 251,98 <small>por 6 dias</small></p>
-          <div class="item-actions">
-            <button class="ghost-btn" type="button">Ver detalhes</button>
-            <button class="primary-btn" type="button">Alugar</button>
-          </div>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="item-image"></div>
-        <div class="item-content">
-          <p class="item-title">Lancha Millenium 300</p>
-          <p class="item-rate">4.9 ★</p>
-          <p class="item-loc">📍 Brasilia, DF - Lago Sul</p>
-          <p class="item-price">R$ 251,98 <small>por 6 dias</small></p>
-          <div class="item-actions">
-            <button class="ghost-btn" type="button">Ver detalhes</button>
-            <button class="primary-btn" type="button">Alugar</button>
-          </div>
-        </div>
-      </article>
+    <main class="list" id="results-root" aria-label="Resultados da busca">
+      <p class="list-status" id="results-status">Carregando…</p>
     </main>
 
     <div class="sheet-overlay" id="sheet-overlay"></div>
     <section class="filter-sheet" id="filter-sheet" aria-label="Filtros">
       <h2 class="sheet-title">Filtrar</h2>
       <p class="sheet-label">Ordenar por:</p>
-      <div class="tags">
-        <span class="tag active">Padrao ×</span>
-        <span class="tag">Preco ×</span>
-        <span class="tag">Avaliacoes ×</span>
-        <span class="tag">Distancia ×</span>
+      <div class="tags" id="order-tags">
+        <button type="button" class="tag active" data-order="relevance">Relevancia</button>
+        <button type="button" class="tag" data-order="price_asc">Preco menor</button>
+        <button type="button" class="tag" data-order="price_desc">Preco maior</button>
+        <button type="button" class="tag" data-order="rating_desc">Avaliacoes</button>
       </div>
 
       <p class="sheet-label">Faixa de preco:</p>
@@ -533,16 +507,211 @@
     </nav>
   </div>
 
+  <script src="js/move-api.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const type = (params.get("type") || "lancha").toLowerCase();
+    function getSearchParams() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    const resultsRoot = document.getElementById("results-root");
+    const toolbarTitle = document.getElementById("toolbar-title");
+    const toolbarSub = document.getElementById("toolbar-sub");
+    const orderTags = document.getElementById("order-tags");
+
     const titleByType = {
       lancha: "Lanchas por perto",
       jetski: "Jetski por perto",
       quadriciclo: "Quadriciclos por perto",
       utv: "UTVs por perto"
     };
-    document.getElementById("toolbar-title").textContent = titleByType[type] || "Resultados por perto";
+
+    let orderBy = getSearchParams().get("orderBy") || "relevance";
+
+    function formatBRL(amount) {
+      var n = typeof amount === "number" ? amount : parseFloat(amount);
+      if (isNaN(n)) return "—";
+      return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function bookingUnitLabel(unit) {
+      var map = { minutes: "por período", hourly: "por hora", daily: "por dia", fixed: "preço fixo" };
+      return map[unit] || "por dia";
+    }
+
+    function syncOrderTagButtons() {
+      orderTags.querySelectorAll(".tag").forEach(function (btn) {
+        btn.classList.toggle("active", btn.getAttribute("data-order") === orderBy);
+      });
+    }
+
+    function buildSearchBody() {
+      var p = getSearchParams();
+      var locationId = p.get("locationId") || "";
+      var body = {
+        listingType: "vehicle",
+        orderBy: orderBy,
+        highlight: false,
+        page: { limit: 24 }
+      };
+      if (locationId) body.locationId = locationId;
+      return body;
+    }
+
+    function resolveCategoryIdFromSlug() {
+      var p = getSearchParams();
+      var slug = (p.get("type") || "").toLowerCase();
+      if (!slug) return Promise.resolve("");
+      return MoveApi.getCategories({ type: "vehicle_rental" }).then(function (data) {
+        var items = (data && data.items) || [];
+        var hint = titleByType[slug] || slug;
+        var found = items.find(function (c) {
+          return (c.name || "").toLowerCase().indexOf(slug) !== -1;
+        });
+        if (found) return found.id || "";
+        found = items.find(function (c) {
+          return hint && (c.name || "").toLowerCase().indexOf(hint.split(" ")[0].toLowerCase()) !== -1;
+        });
+        return found && found.id ? found.id : "";
+      });
+    }
+
+    function renderListingCard(it) {
+      var article = document.createElement("article");
+      article.className = "item";
+      var imgWrap = document.createElement("div");
+      imgWrap.className = "item-image";
+      if (it.coverImageUrl) {
+        imgWrap.classList.add("has-cover");
+        var img = document.createElement("img");
+        img.className = "item-cover";
+        img.src = it.coverImageUrl;
+        img.alt = "";
+        img.loading = "lazy";
+        imgWrap.appendChild(img);
+      }
+      var content = document.createElement("div");
+      content.className = "item-content";
+      var title = document.createElement("p");
+      title.className = "item-title";
+      title.textContent = it.title || "Anúncio";
+      var rate = document.createElement("p");
+      rate.className = "item-rate";
+      rate.textContent = (it.rating != null ? Number(it.rating).toFixed(1) : "—") + " ★";
+      var loc = document.createElement("p");
+      loc.className = "item-loc";
+      loc.textContent = "📍 " + (it.locationLabel || "Local a combinar");
+      var price = document.createElement("p");
+      price.className = "item-price";
+      var small = document.createElement("small");
+      small.textContent = bookingUnitLabel(it.bookingUnit);
+      price.appendChild(document.createTextNode(formatBRL(it.fixedPrice) + " "));
+      price.appendChild(small);
+      var actions = document.createElement("div");
+      actions.className = "item-actions";
+      var detailBtn = document.createElement("button");
+      detailBtn.type = "button";
+      detailBtn.className = "ghost-btn";
+      detailBtn.textContent = "Ver detalhes";
+      detailBtn.addEventListener("click", function () {
+        window.location.href = "booking-confirm.html?listingId=" + encodeURIComponent(it.id);
+      });
+      var rentBtn = document.createElement("button");
+      rentBtn.type = "button";
+      rentBtn.className = "primary-btn";
+      rentBtn.textContent = "Alugar";
+      rentBtn.addEventListener("click", function () {
+        window.location.href = "booking-confirm.html?listingId=" + encodeURIComponent(it.id);
+      });
+      actions.appendChild(detailBtn);
+      actions.appendChild(rentBtn);
+      content.appendChild(title);
+      content.appendChild(rate);
+      content.appendChild(loc);
+      content.appendChild(price);
+      content.appendChild(actions);
+      article.appendChild(imgWrap);
+      article.appendChild(content);
+      return article;
+    }
+
+    function runSearch() {
+      resultsRoot.querySelectorAll(".item, .list-status").forEach(function (n) {
+        n.remove();
+      });
+      var loading = document.createElement("p");
+      loading.className = "list-status";
+      loading.id = "results-status";
+      loading.textContent = "Carregando…";
+      resultsRoot.appendChild(loading);
+
+      var p = getSearchParams();
+      var fromUrl = p.get("categoryId") || "";
+      var categoryPromise = fromUrl ? Promise.resolve(fromUrl) : resolveCategoryIdFromSlug();
+
+      categoryPromise
+        .then(function (resolvedId) {
+          var body = buildSearchBody();
+          if (resolvedId) body.categoryIds = [resolvedId];
+          return MoveApi.searchListings(body);
+        })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          document.getElementById("results-status").remove();
+          if (!items.length) {
+            var empty = document.createElement("p");
+            empty.className = "list-status";
+            empty.textContent = "Nenhum resultado encontrado.";
+            resultsRoot.appendChild(empty);
+            return;
+          }
+          items.forEach(function (it) {
+            resultsRoot.appendChild(renderListingCard(it));
+          });
+        })
+        .catch(function (err) {
+          var st = document.getElementById("results-status");
+          if (st) {
+            st.textContent =
+              "Não foi possível carregar os resultados. Defina a URL da API em meta move-api-base ou window.MOVE_API_BASE.";
+            st.classList.add("error");
+          }
+        });
+    }
+
+    function updateToolbar() {
+      var p = getSearchParams();
+      var catName = p.get("categoryName");
+      var where = p.get("where") || "";
+      var typeSlug = (p.get("type") || "").toLowerCase();
+      var categoryId = p.get("categoryId");
+
+      if (catName) {
+        toolbarTitle.textContent = catName;
+      } else if (categoryId) {
+        toolbarTitle.textContent = "Resultados";
+      } else if (typeSlug && titleByType[typeSlug]) {
+        toolbarTitle.textContent = titleByType[typeSlug];
+      } else {
+        toolbarTitle.textContent = "Resultados por perto";
+      }
+
+      var subParts = [];
+      if (where) subParts.push(where);
+      var q = p.get("q");
+      if (q) subParts.push('"' + q + '"');
+      toolbarSub.textContent = subParts.length ? subParts.join(" · ") : "MOVE marketplace";
+    }
+
+    updateToolbar();
+    syncOrderTagButtons();
+    runSearch();
+
+    orderTags.addEventListener("click", function (event) {
+      var btn = event.target.closest(".tag");
+      if (!btn) return;
+      orderBy = btn.getAttribute("data-order") || "relevance";
+      syncOrderTagButtons();
+    });
 
     const overlay = document.getElementById("sheet-overlay");
     const sheet = document.getElementById("filter-sheet");
@@ -559,7 +728,13 @@
 
     document.getElementById("open-filter").addEventListener("click", openSheet);
     document.getElementById("cancel-filter").addEventListener("click", closeSheet);
-    document.getElementById("apply-filter").addEventListener("click", closeSheet);
+    document.getElementById("apply-filter").addEventListener("click", function () {
+      closeSheet();
+      var next = new URLSearchParams(window.location.search);
+      next.set("orderBy", orderBy);
+      window.history.replaceState({}, "", window.location.pathname + "?" + next.toString());
+      runSearch();
+    });
     overlay.addEventListener("click", closeSheet);
   </script>
 </body>

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="move-api-base" content="" />
   <title>MOVE - Home</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -224,6 +225,50 @@
 
     .dest-item:hover {
       background: rgba(205, 214, 226, 0.32);
+    }
+
+    .loc-suggest {
+      margin-top: 6px;
+      max-height: 168px;
+      overflow-y: auto;
+      border: 1px solid #dde3ec;
+      border-radius: 8px;
+      background: #fff;
+      display: none;
+      box-shadow: 0 4px 12px rgba(12, 22, 35, 0.08);
+    }
+
+    .loc-suggest.open {
+      display: block;
+    }
+
+    .loc-suggest-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: var(--fs-sm);
+      color: #3a4b62;
+      cursor: pointer;
+      border-bottom: 1px solid #eef1f5;
+    }
+
+    .loc-suggest-item:last-child {
+      border-bottom: 0;
+    }
+
+    .loc-suggest-item:hover,
+    .loc-suggest-item:focus {
+      background: #f3f6fb;
+      outline: none;
+    }
+
+    .loc-suggest-empty {
+      padding: 8px 10px;
+      font-size: var(--fs-xs);
+      color: #8b95a5;
     }
 
     .dest-icon {
@@ -764,12 +809,7 @@
 
     <div class="home-content" id="home-content">
     <section class="chips-wrap" aria-label="Categorias de veiculos">
-      <div class="chips">
-        <button class="chip active" type="button">Lancha</button>
-        <button class="chip" type="button">Jet Ski</button>
-        <button class="chip" type="button">UTV</button>
-        <button class="chip" type="button">Quadriciclo</button>
-      </div>
+      <div class="chips" id="vehicle-chips"></div>
     </section>
 
     <main>
@@ -781,7 +821,7 @@
               <h1 class="hero-title" id="hero-title">Lancha Riva 90' Argo</h1>
               <p class="hero-meta" id="hero-meta">R$ 420,00 por dia<br />Santos, SP</p>
             </div>
-            <button class="details-btn" type="button" onclick="window.location.href='booking-confirm.html'">Ver detalhes</button>
+            <button class="details-btn" type="button" id="hero-details-btn">Ver detalhes</button>
           </div>
         </article>
         <div class="dots" aria-hidden="true">
@@ -902,8 +942,9 @@
           <div class="search-body">
             <div class="where-input">
               <svg class="where-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.5 6-11a6 6 0 1 0-12 0c0 5.5 6 11 6 11z"/><circle cx="12" cy="10" r="2.3"/></svg>
-              <input id="where-search-input" type="text" placeholder="Buscar destino" aria-label="Buscar destino" />
+              <input id="where-search-input" type="text" placeholder="Buscar destino" aria-label="Buscar destino" autocomplete="off" />
             </div>
+            <div id="loc-suggest" class="loc-suggest" aria-live="polite"></div>
             <p class="dest-suggest">destinos sugeridos</p>
             <div class="dest-list">
               <button class="dest-item" type="button" data-destination="Perto de voce">
@@ -986,36 +1027,7 @@
         <details class="search-block" data-key="what">
           <summary><strong>O que?</strong> <span>Selecionar veiculos</span></summary>
           <div class="search-body">
-            <div class="type-list">
-              <div class="type-item" data-type="lancha">
-                <div class="type-info">
-                  <p class="type-main">Lancha</p>
-                  <p class="type-sub">Motos aquat.</p>
-                </div>
-                <span class="check on">✓</span>
-              </div>
-              <div class="type-item" data-type="jetski">
-                <div class="type-info">
-                  <p class="type-main">Jetski</p>
-                  <p class="type-sub">Moto aquatico.</p>
-                </div>
-                <span class="check off"></span>
-              </div>
-              <div class="type-item" data-type="quadriciclo">
-                <div class="type-info">
-                  <p class="type-main">Quadriciclo</p>
-                  <p class="type-sub">Moto de quatro rodas (ATV).</p>
-                </div>
-                <span class="check off"></span>
-              </div>
-              <div class="type-item" data-type="utv">
-                <div class="type-info">
-                  <p class="type-main">UTV</p>
-                  <p class="type-sub">Side-by-side.</p>
-                </div>
-                <span class="check off"></span>
-              </div>
-            </div>
+            <div class="type-list" id="vehicle-types"></div>
             <div class="search-caret"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
           </div>
         </details>
@@ -1050,19 +1062,11 @@
     </nav>
   </div>
 
+  <script src="js/move-api.js"></script>
   <script>
     document.getElementById("search-form").addEventListener("submit", function (event) {
       event.preventDefault();
       openSearchMode();
-    });
-
-    document.querySelectorAll(".chip").forEach(function (chip) {
-      chip.addEventListener("click", function () {
-        document.querySelectorAll(".chip").forEach(function (item) {
-          item.classList.remove("active");
-        });
-        chip.classList.add("active");
-      });
     });
 
     const searchInput = document.querySelector(".search input");
@@ -1073,8 +1077,37 @@
     const searchActions = document.getElementById("search-actions");
     const blocks = Array.from(document.querySelectorAll(".search-block"));
     const destinationButtons = Array.from(document.querySelectorAll(".dest-item"));
-    const typeItems = Array.from(document.querySelectorAll(".type-item"));
-    let selectedType = "lancha";
+    const locSuggest = document.getElementById("loc-suggest");
+    const vehicleChips = document.getElementById("vehicle-chips");
+    const vehicleTypes = document.getElementById("vehicle-types");
+    const heroDetailsBtn = document.getElementById("hero-details-btn");
+
+    let selectedCategoryId = "";
+    let selectedCategoryName = "";
+    let selectedPickerKey = "";
+    let selectedLocationId = "";
+    let locSuggestTimer = null;
+    let heroSlides = [];
+    let heroInterval = null;
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function formatBRL(amount) {
+      var n = typeof amount === "number" ? amount : parseFloat(amount);
+      if (isNaN(n)) return "—";
+      return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function bookingUnitLabel(unit) {
+      var map = { minutes: "por período", hourly: "por hora", daily: "por dia", fixed: "preço fixo" };
+      return map[unit] || "por dia";
+    }
 
     function openSearchMode() {
       homeContent.classList.add("search-open");
@@ -1087,6 +1120,151 @@
       homeContent.classList.remove("search-open");
       searchMode.classList.remove("open");
       searchActions.style.display = "none";
+      closeLocSuggest();
+    }
+
+    function closeLocSuggest() {
+      locSuggest.classList.remove("open");
+      locSuggest.innerHTML = "";
+    }
+
+    function pickLocation(id, label) {
+      selectedLocationId = id || "";
+      whereSearchInput.value = label || "";
+      whereSummaryText.textContent = label || "Buscar destino";
+      closeLocSuggest();
+    }
+
+    function pickerKey(cat) {
+      return (cat.id && String(cat.id)) || "name:" + (cat.name || "");
+    }
+
+    function setSelectedCategory(id, name, key) {
+      selectedCategoryId = id || "";
+      selectedCategoryName = name || "";
+      selectedPickerKey = key || pickerKey({ id: id, name: name });
+      vehicleChips.querySelectorAll(".chip").forEach(function (chip) {
+        chip.classList.toggle("active", chip.getAttribute("data-picker-key") === selectedPickerKey);
+      });
+      vehicleTypes.querySelectorAll(".type-item").forEach(function (row) {
+        var on = row.getAttribute("data-picker-key") === selectedPickerKey;
+        var check = row.querySelector(".check");
+        check.classList.toggle("on", on);
+        check.classList.toggle("off", !on);
+        check.textContent = on ? "✓" : "";
+      });
+    }
+
+    function renderCategoryPickers(items) {
+      vehicleChips.innerHTML = "";
+      vehicleTypes.innerHTML = "";
+      items.forEach(function (cat, index) {
+        var id = cat.id || "";
+        var key = pickerKey(cat);
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip" + (index === 0 ? " active" : "");
+        chip.textContent = cat.name;
+        chip.setAttribute("data-category-id", id);
+        chip.setAttribute("data-picker-key", key);
+        vehicleChips.appendChild(chip);
+
+        var row = document.createElement("div");
+        row.className = "type-item";
+        row.setAttribute("data-category-id", id);
+        row.setAttribute("data-picker-key", key);
+        row.innerHTML =
+          '<div class="type-info">' +
+          "<p class=\"type-main\"></p>" +
+          "<p class=\"type-sub\"></p>" +
+          "</div>" +
+          '<span class="check ' +
+          (index === 0 ? "on\">✓" : 'off"></span>');
+        row.querySelector(".type-main").textContent = cat.name;
+        row.querySelector(".type-sub").textContent = cat.description || "Aluguel de veículo";
+        vehicleTypes.appendChild(row);
+      });
+      if (items.length) {
+        var first = items[0];
+        setSelectedCategory(first.id || "", first.name || "", pickerKey(first));
+      }
+    }
+
+    function loadCategories() {
+      var fallback = [
+        { id: "", name: "Lancha", description: "Motos aquáticas" },
+        { id: "", name: "Jet Ski", description: "Moto aquático" },
+        { id: "", name: "UTV", description: "Side-by-side" },
+        { id: "", name: "Quadriciclo", description: "ATV" }
+      ];
+      return MoveApi.getCategories({ type: "vehicle_rental" })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          if (!items.length) {
+            renderCategoryPickers(fallback);
+            return;
+          }
+          renderCategoryPickers(items);
+        })
+        .catch(function () {
+          renderCategoryPickers(fallback);
+        });
+    }
+
+    vehicleChips.addEventListener("click", function (event) {
+      var chip = event.target.closest(".chip");
+      if (!chip) return;
+      setSelectedCategory(
+        chip.getAttribute("data-category-id") || "",
+        chip.textContent.trim(),
+        chip.getAttribute("data-picker-key") || ""
+      );
+    });
+
+    vehicleTypes.addEventListener("click", function (event) {
+      var row = event.target.closest(".type-item");
+      if (!row) return;
+      var nameEl = row.querySelector(".type-main");
+      setSelectedCategory(
+        row.getAttribute("data-category-id") || "",
+        nameEl ? nameEl.textContent.trim() : "",
+        row.getAttribute("data-picker-key") || ""
+      );
+    });
+
+    function scheduleLocationSearch(q) {
+      clearTimeout(locSuggestTimer);
+      if (!q || q.length < 2) {
+        closeLocSuggest();
+        return;
+      }
+      locSuggestTimer = setTimeout(function () {
+        MoveApi.getLocations(q)
+          .then(function (data) {
+            var items = (data && data.items) || [];
+            locSuggest.innerHTML = "";
+            if (!items.length) {
+              locSuggest.innerHTML = '<p class="loc-suggest-empty">Nenhum destino encontrado</p>';
+              locSuggest.classList.add("open");
+              return;
+            }
+            items.slice(0, 8).forEach(function (loc) {
+              var btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = "loc-suggest-item";
+              btn.textContent = loc.label || [loc.city, loc.state].filter(Boolean).join(", ");
+              btn.addEventListener("click", function () {
+                pickLocation(loc.id, btn.textContent);
+              });
+              locSuggest.appendChild(btn);
+            });
+            locSuggest.classList.add("open");
+          })
+          .catch(function () {
+            locSuggest.innerHTML = '<p class="loc-suggest-empty">Indisponível</p>';
+            locSuggest.classList.add("open");
+          });
+      }, 300);
     }
 
     searchInput.addEventListener("focus", openSearchMode);
@@ -1110,50 +1288,65 @@
         block.open = false;
       });
       blocks[0].open = true;
+      selectedLocationId = "";
+      whereSearchInput.value = "";
+      whereSummaryText.textContent = "Buscar destino";
+      closeLocSuggest();
     });
 
     document.getElementById("search-back-btn").addEventListener("click", closeSearchMode);
 
-    typeItems.forEach(function (item) {
-      item.addEventListener("click", function () {
-        typeItems.forEach(function (row) {
-          const check = row.querySelector(".check");
-          check.classList.remove("on");
-          check.classList.add("off");
-          check.textContent = "";
-        });
-        const currentCheck = item.querySelector(".check");
-        currentCheck.classList.add("on");
-        currentCheck.classList.remove("off");
-        currentCheck.textContent = "✓";
-        selectedType = item.dataset.type || "lancha";
-      });
-    });
-
     document.getElementById("do-search-btn").addEventListener("click", function () {
-      const where = (whereSearchInput.value || "").trim();
-      const query = new URLSearchParams({ type: selectedType, where: where });
-      window.location.href = "search-results.html?" + query.toString();
+      var where = (whereSearchInput.value || "").trim();
+      var q = new URLSearchParams();
+      if (selectedCategoryId) q.set("categoryId", selectedCategoryId);
+      if (selectedCategoryName) q.set("categoryName", selectedCategoryName);
+      if (selectedLocationId) q.set("locationId", selectedLocationId);
+      if (where) q.set("where", where);
+      var headerQ = (searchInput.value || "").trim();
+      if (headerQ) q.set("q", headerQ);
+      q.set("orderBy", "relevance");
+      window.location.href = "search-results.html?" + q.toString();
     });
 
     destinationButtons.forEach(function (button) {
       button.addEventListener("click", function () {
-        const destination = button.dataset.destination || "";
-        whereSearchInput.value = destination;
-        whereSummaryText.textContent = destination || "Buscar destino";
+        var destination = button.dataset.destination || "";
+        if (!destination || destination === "Perto de voce") {
+          pickLocation("", destination || "");
+          return;
+        }
+        MoveApi.getLocations(destination)
+          .then(function (data) {
+            var items = (data && data.items) || [];
+            var first = items[0];
+            if (first) {
+              pickLocation(first.id, first.label || destination);
+            } else {
+              pickLocation("", destination);
+            }
+          })
+          .catch(function () {
+            pickLocation("", destination);
+          });
       });
     });
 
     whereSearchInput.addEventListener("input", function () {
-      const value = whereSearchInput.value.trim();
+      var value = whereSearchInput.value.trim();
       whereSummaryText.textContent = value || "Buscar destino";
+      if (!value) {
+        selectedLocationId = "";
+      }
+      scheduleLocationSearch(value);
     });
 
-    const heroSlides = [
-      { title: "Lancha Riva 90' Argo", meta: "R$ 420,00 por dia<br />Santos, SP", rate: "4.9 ★" },
-      { title: "Jet Ski Wave Runner", meta: "R$ 310,00 por dia<br />Guaruja, SP", rate: "4.8 ★" },
-      { title: "UTV Adventure X", meta: "R$ 510,00 por dia<br />Atibaia, SP", rate: "4.7 ★" }
-    ];
+    document.addEventListener("click", function (event) {
+      if (!locSuggest.classList.contains("open")) return;
+      if (event.target === whereSearchInput || locSuggest.contains(event.target)) return;
+      if (event.target.closest && event.target.closest(".where-input")) return;
+      closeLocSuggest();
+    });
 
     const heroTitle = document.getElementById("hero-title");
     const heroMeta = document.getElementById("hero-meta");
@@ -1162,19 +1355,85 @@
     let currentSlide = 0;
 
     function renderHeroSlide(index) {
-      const slide = heroSlides[index];
+      var slide = heroSlides[index];
+      if (!slide) return;
       heroTitle.textContent = slide.title;
       heroMeta.innerHTML = slide.meta;
       heroRate.textContent = slide.rate;
+      heroDetailsBtn.dataset.listingId = slide.listingId || "";
       heroDots.forEach(function (dot, dotIndex) {
         dot.classList.toggle("active", dotIndex === index);
+        dot.style.visibility = dotIndex < heroSlides.length ? "visible" : "hidden";
       });
     }
 
-    setInterval(function () {
-      currentSlide = (currentSlide + 1) % heroSlides.length;
-      renderHeroSlide(currentSlide);
-    }, 3500);
+    function startHeroRotation() {
+      if (heroInterval) clearInterval(heroInterval);
+      if (heroSlides.length <= 1) return;
+      heroInterval = setInterval(function () {
+        currentSlide = (currentSlide + 1) % heroSlides.length;
+        renderHeroSlide(currentSlide);
+      }, 3500);
+    }
+
+    heroDetailsBtn.addEventListener("click", function () {
+      var id = heroDetailsBtn.dataset.listingId;
+      if (id) {
+        window.location.href = "booking-confirm.html?listingId=" + encodeURIComponent(id);
+      } else {
+        window.location.href = "booking-confirm.html";
+      }
+    });
+
+    function defaultHeroSlides() {
+      return [
+        { title: "Lancha Riva 90' Argo", meta: "R$ 420,00 por dia<br />Santos, SP", rate: "4.9 ★", listingId: "" },
+        { title: "Jet Ski Wave Runner", meta: "R$ 310,00 por dia<br />Guaruja, SP", rate: "4.8 ★", listingId: "" },
+        { title: "UTV Adventure X", meta: "R$ 510,00 por dia<br />Atibaia, SP", rate: "4.7 ★", listingId: "" }
+      ];
+    }
+
+    function loadHeroFromApi() {
+      return MoveApi.searchListings({
+        listingType: "vehicle",
+        page: { limit: 6 },
+        orderBy: "relevance",
+        highlight: false
+      })
+        .then(function (data) {
+          var items = (data && data.items) || [];
+          if (!items.length) {
+            heroSlides = defaultHeroSlides();
+          } else {
+            heroSlides = items.slice(0, 3).map(function (it) {
+              var priceLine =
+                escapeHtml(formatBRL(it.fixedPrice)) +
+                " <small>" +
+                escapeHtml(bookingUnitLabel(it.bookingUnit)) +
+                "</small>";
+              return {
+                title: it.title || "Experiência",
+                meta: priceLine + "<br />" + escapeHtml(it.locationLabel || ""),
+                rate: (it.rating != null ? Number(it.rating).toFixed(1) : "—") + " ★",
+                listingId: it.id || ""
+              };
+            });
+          }
+          currentSlide = 0;
+          renderHeroSlide(0);
+          startHeroRotation();
+        })
+        .catch(function () {
+          heroSlides = defaultHeroSlides();
+          currentSlide = 0;
+          renderHeroSlide(0);
+          startHeroRotation();
+        });
+    }
+
+    loadCategories().then(function () {
+      return loadHeroFromApi();
+    });
 
     const draggableRows = Array.from(document.querySelectorAll(".row-scroll"));
 
